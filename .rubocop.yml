@@ -1,0 +1,80 @@
+require:
+  - rubocop-rails
+
+AllCops:
+  Exclude:
+    - 'vendor/**/*'
+    - 'bin/**'
+    - "db/schema.rb"
+    - 'app/serializers/**/*'
+    - 'Guardfile'
+    - 'config/**/*'
+    - 'spec/**/*'
+
+######## Style ########
+# 日本語のコメントを許可する
+Style/AsciiComments:
+  Enabled: false
+
+# ドキュメントの無い public class を許可する
+Style/Documentation:
+  Enabled: false
+
+# redirect_to xxx and return のイディオムを維持したい
+Style/AndOr:
+  EnforcedStyle: conditionals
+
+# 文字リテラルのイミュータブル宣言を無視（freezeになるのはRuby3以降）
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# 条件式の方を意識させたい場合には後置の if/unless を使わない方が分かりやすい
+Style/IfUnlessModifier:
+  Enabled: false
+
+# 1_000_000 と区切り文字が 2 個以上必要になる場合のみ _ 区切りを必須にする
+Style/NumericLiterals:
+  MinDigits: 7
+
+# AutoCorrect オフ
+Style/BlockDelimiters:
+  AutoCorrect: false
+
+######## Layout ########
+# private/protected は一段深くインデントする
+Layout/IndentationConsistency:
+  EnforcedStyle: indented_internal_methods
+
+# 行の長さを変更
+Layout/LineLength:
+  Max: 120
+
+######## Metrics ########
+# メソッドのサイズ
+Metrics/AbcSize:
+  Max: 24
+
+# 1メソッドの長さ
+Metrics/MethodLength:
+  Max: 16
+
+# Classの長さ
+Metrics/ClassLength:
+  Max: 120
+
+######## Rails ########
+# dependentの指定なし
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+
+# inverse_ofの指定なし
+Rails/InverseOf:
+  Enabled: false
+
+# migrateのNotnull オフ
+Rails/NotNullColumn:
+  Enabled: false
+
+# GemのOrderの指定なし
+Bundler/OrderedGems:
+  Enabled: false
