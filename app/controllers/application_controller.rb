@@ -12,12 +12,12 @@ class ApplicationController < ActionController::API
   end
 
   def render_serializer(data, set_serializer)
-    render json: data, serializer: set_serializer, adapter: :json
+    render json: data, serializer: set_serializer
   end
 
   def render_collection_serializer(datas, set_serializer)
     render json: ActiveModel::Serializer::CollectionSerializer.new(
-      datas, serializer: set_serializer, adapter: :json
+      datas, serializer: set_serializer
     )
   end
 

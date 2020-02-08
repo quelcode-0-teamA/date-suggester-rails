@@ -1,0 +1,115 @@
+version: 2.1
+orbs:
+  heroku: circleci/heroku@1.0.0
+workflows:
+  heroku_deploy:
+    jobs:
+      - build
+      - deploy-dev:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - develop
+      - deploy-pro:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      # Language: Ruby
+      - image: circleci/ruby:2.6.5-node
+        environment:
+          BUNDLE_JOBS: 3
+          BUNDLE_RETRY: 3
+          BUNDLE_PATH: vendor/bundle
+          RAILS_ENV: test
+          PGHOST: 127.0.0.1
+          PGUSER: postgres
+      # DB: PostgreSQL
+      - image: circleci/postgres:11.6-alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: date-suggester-rails_test
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - run:
+          name: Installe bundler
+          command: gem install bundler:2.1.4
+
+      - restore_cache:
+          keys:
+            - date-suggester-rails-{{ checksum "Gemfile.lock" }}
+            - date-suggester-rails-
+
+      - run:
+          name: Bundle Install
+          command: bundle check --path vendor/bundle || bundle install --deployment
+
+      - save_cache:
+          key: date-suggester-rails-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      # Database setup
+      - run: bundle exec rails db:schema:load
+
+      - run:
+          name: Run rspec in parallel
+          command: |
+            mkdir /tmp/test-results
+            bundle exec rspec --profile 10 \
+                        --format RspecJunitFormatter \
+                        --out /tmp/test_results/rspec.xml \
+                        --format progress \
+                        $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+
+      # collect reports
+      - store_test_results:
+          path: /tmp/test-results
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: test-results
+
+      # Rubocop
+      - run:
+          name: Rubocop
+          command: bundle exec rubocop
+
+  deploy-dev:
+    working_directory: /tmp/repo-dev
+    docker:
+    - image: buildpack-deps:bionic
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - heroku/deploy-via-git:
+          maintenance-mode: true
+          app-name: $HEROKU_DEV_APP_NAME
+      - run:
+          command: heroku run bundle exec rails db:migrate --app $HEROKU_DEV_APP_NAME
+          name: Command run rails db:migrate
+
+  deploy-pro:
+    working_directory: /tmp/repo-pro
+    docker:
+    - image: buildpack-deps:bionic
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - heroku/deploy-via-git:
+          maintenance-mode: true
+          app-name: $HEROKU_PRO_APP_NAME
+      - run:
+          command: heroku run bundle exec rails db:migrate --app $HEROKU_PRO_APP_NAME
+          name: Command run rails db:migrate
