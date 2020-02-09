@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  heroku: circleci/heroku@1.0.0
+  heroku: circleci/heroku@1.0.1
 workflows:
   heroku_deploy:
     jobs:
@@ -33,6 +33,7 @@ jobs:
           RAILS_ENV: test
           PGHOST: 127.0.0.1
           PGUSER: postgres
+          REVIEWDOG_VERSION: 0.9.11
       # DB: PostgreSQL
       - image: circleci/postgres:11.6-alpine
         environment:
@@ -42,7 +43,7 @@ jobs:
       - checkout
       # Download and cache dependencies
       - run:
-          name: Installe bundler
+          name: Install bundler
           command: gem install bundler:2.1.4
 
       - restore_cache:
@@ -52,15 +53,16 @@ jobs:
 
       - run:
           name: Bundle Install
-          command: bundle check --path vendor/bundle || bundle install --deployment
+          command: bundle check || bundle install --deployment
 
       - save_cache:
           key: date-suggester-rails-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
 
-      # Database setup
-      - run: bundle exec rails db:schema:load
+      - run:
+          name: Database setup
+          command: bundle exec rails db:schema:load
 
       - run:
           name: Run rspec in parallel
@@ -79,15 +81,19 @@ jobs:
           path: /tmp/test-results
           destination: test-results
 
-      # Rubocop
       - run:
-          name: Rubocop
-          command: bundle exec rubocop
+          name: Install reviewdog
+          command: |
+            curl -fSL https://github.com/haya14busa/reviewdog/releases/download/$REVIEWDOG_VERSION/reviewdog_linux_amd64 -o reviewdog && chmod +x ./reviewdog
+
+      - run:
+          name: Run rubocop & reviewdog
+          command: bundle exec rubocop | ./reviewdog -f=rubocop -reporter=github-pr-review
 
   deploy-dev:
     working_directory: /tmp/repo-dev
     docker:
-    - image: buildpack-deps:bionic
+      - image: buildpack-deps:bionic
     executor: heroku/default
     steps:
       - checkout
@@ -102,7 +108,7 @@ jobs:
   deploy-pro:
     working_directory: /tmp/repo-pro
     docker:
-    - image: buildpack-deps:bionic
+      - image: buildpack-deps:bionic
     executor: heroku/default
     steps:
       - checkout

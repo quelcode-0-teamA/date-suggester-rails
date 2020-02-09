@@ -3,13 +3,13 @@ require:
 
 AllCops:
   Exclude:
-    - 'vendor/**/*'
-    - 'bin/**'
+    - "vendor/**/*"
+    - "bin/**"
     - "db/schema.rb"
-    - 'app/serializers/**/*'
-    - 'Guardfile'
-    - 'config/**/*'
-    - 'spec/**/*'
+    - "app/serializers/**/*"
+    - "Guardfile"
+    - "config/**/*"
+    - "spec/**/*"
 
 ######## Style ########
 # 日本語のコメントを許可する
@@ -71,7 +71,7 @@ Rails/HasManyOrHasOneDependent:
 Rails/InverseOf:
   Enabled: false
 
-# migrateのNotnull オフ
+# migrateのNotNull オフ
 Rails/NotNullColumn:
   Enabled: false
 

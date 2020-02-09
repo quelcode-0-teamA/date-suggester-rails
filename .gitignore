@@ -21,3 +21,6 @@
 
 # rest client
 request.http
+
+# vscode config
+/.vscode/*
