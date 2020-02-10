@@ -33,9 +33,21 @@ module DateSuggesterRails
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # RspecのControllerファイルを作成しない
     config.generators do |g|
       g.test_framework :rspec,
                         controller_specs: false
+    end
+
+    # rack-cors設定
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins "*"
+        resource "*",
+          headers: :any,
+          methods: [:get, :post, :put, :delete, :options, :head]
+      end
     end
   end
 end
