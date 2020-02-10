@@ -10,13 +10,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_07_094720) do
+ActiveRecord::Schema.define(version: 2020_02_10_062226) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "areas", force: :cascade do |t|
     t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "my_plans", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "plan_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["plan_id"], name: "index_my_plans_on_plan_id"
+    t.index ["user_id"], name: "index_my_plans_on_user_id"
+  end
+
+  create_table "plans", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "description", null: false
+    t.bigint "area_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["area_id"], name: "index_plans_on_area_id"
+  end
+
+  create_table "spots", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description", null: false
+    t.string "budget", null: false
+    t.string "tel"
+    t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -36,5 +64,8 @@ ActiveRecord::Schema.define(version: 2020_02_07_094720) do
     t.index ["token"], name: "index_users_on_token", unique: true
   end
 
+  add_foreign_key "my_plans", "plans"
+  add_foreign_key "my_plans", "users"
+  add_foreign_key "plans", "areas"
   add_foreign_key "users", "areas"
 end
