@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_10_062226) do
+ActiveRecord::Schema.define(version: 2020_02_12_045132) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,17 @@ ActiveRecord::Schema.define(version: 2020_02_10_062226) do
     t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "user_types", force: :cascade do |t|
+    t.integer "tens_place_age", null: false
+    t.integer "early_or_late", null: false
+    t.integer "standard_budget", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["early_or_late"], name: "index_user_types_on_early_or_late"
+    t.index ["tens_place_age", "early_or_late"], name: "index_user_types_on_tens_place_age_and_early_or_late", unique: true
+    t.index ["tens_place_age"], name: "index_user_types_on_tens_place_age"
   end
 
   create_table "users", force: :cascade do |t|

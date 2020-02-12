@@ -16,6 +16,7 @@ gem 'ransack', '~> 2.3', '>= 2.3.2'
 gem 'enumerize', '~> 2.3', '>= 2.3.1'
 gem 'rubocop', '~> 0.79.0'
 gem 'rubocop-rails', '~> 2.4', '>= 2.4.2'
+gem 'seed-fu', '~> 2.3', '>= 2.3.9'
 
 group :development, :test do
   gem 'byebug', '~> 11.1', '>= 11.1.1'

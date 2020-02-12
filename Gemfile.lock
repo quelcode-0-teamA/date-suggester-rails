@@ -215,6 +215,9 @@ GEM
       rack (>= 1.1)
       rubocop (>= 0.72.0)
     ruby-progressbar (1.10.1)
+    seed-fu (2.3.9)
+      activerecord (>= 3.1)
+      activesupport (>= 3.1)
     shellany (0.0.1)
     spring (2.1.0)
     spring-watcher-listen (2.0.1)
@@ -263,6 +266,7 @@ DEPENDENCIES
   rspec_junit_formatter (~> 0.4.1)
   rubocop (~> 0.79.0)
   rubocop-rails (~> 2.4, >= 2.4.2)
+  seed-fu (~> 2.3, >= 2.3.9)
   spring (~> 2.1)
   spring-watcher-listen (~> 2.0, >= 2.0.1)
 
