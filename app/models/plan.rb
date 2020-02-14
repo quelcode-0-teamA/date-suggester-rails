@@ -9,10 +9,19 @@ class Plan < ApplicationRecord
 
   def self.suggest(params)
     budget_range = get_date_budget(params)
-    date_area = params[:date_area]
-    date_time = params[:date_time]
-    date_type = params[:date_type]
-    { "budget_range": budget_range, "date_area": date_area, "date_time": date_time, "date_type": date_type }
+    sort_params = {
+      budget_range: budget_range,
+      date_area: params[:date_area],
+      date_time: params[:date_time],
+      date_type: params[:date_type]
+    }
+    sorted_plans = sort_plans(sort_params)
+    sorted_plans.sample
+  end
+
+  def self.sort_plans(sort_params)
+    Plan.where(total_budget: sort_params[:budget_range][0]...sort_params[:budget_range][1])
+        .where(area_id: sort_params[:date_area])
   end
 
   def self.get_date_budget(params)
