@@ -98,12 +98,20 @@ jobs:
     steps:
       - checkout
       - heroku/install
+      - run:
+          name: Mentenance mode ON
+          command: heroku maintenance:on --app $HEROKU_DEV_APP_NAME
       - heroku/deploy-via-git:
-          maintenance-mode: true
           app-name: $HEROKU_DEV_APP_NAME
       - run:
-          command: heroku run bundle exec rails db:migrate --app $HEROKU_DEV_APP_NAME
           name: Command run rails db:migrate
+          command: heroku run bundle exec rails db:migrate --app $HEROKU_DEV_APP_NAME
+      - run:
+          name: Command run rails db:seed_fu
+          command: heroku run bundle exec rails db:seed_fu --app $HEROKU_DEV_APP_NAME
+      - run:
+          name: Mentenance mode OFF
+          command: heroku maintenance:off --app $HEROKU_DEV_APP_NAME
 
   deploy-pro:
     working_directory: /tmp/repo-pro
@@ -113,9 +121,14 @@ jobs:
     steps:
       - checkout
       - heroku/install
+      - run:
+          name: Mentenance mode ON
+          command: heroku maintenance:on --app $HEROKU_DEV_APP_NAME
       - heroku/deploy-via-git:
-          maintenance-mode: true
           app-name: $HEROKU_PRO_APP_NAME
       - run:
-          command: heroku run bundle exec rails db:migrate --app $HEROKU_PRO_APP_NAME
           name: Command run rails db:migrate
+          command: heroku run bundle exec rails db:migrate --app $HEROKU_PRO_APP_NAME
+      - run:
+          name: Mentenance mode OFF
+          command: heroku maintenance:off --app $HEROKU_DEV_APP_NAME
