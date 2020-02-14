@@ -10,4 +10,5 @@ cnt = 1
     end
     cnt += 1
   end
+  Plan.find(i).change_total_budget
 end

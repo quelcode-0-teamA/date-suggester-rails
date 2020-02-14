@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_14_041624) do
+ActiveRecord::Schema.define(version: 2020_02_14_055407) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,13 +48,15 @@ ActiveRecord::Schema.define(version: 2020_02_14_041624) do
     t.bigint "area_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "total_budget", default: 0, null: false
     t.index ["area_id"], name: "index_plans_on_area_id"
+    t.index ["total_budget"], name: "index_plans_on_total_budget"
   end
 
   create_table "spots", force: :cascade do |t|
     t.string "name", null: false
     t.text "description", null: false
-    t.string "budget", null: false
+    t.integer "budget", null: false
     t.string "tel"
     t.string "url"
     t.datetime "created_at", null: false

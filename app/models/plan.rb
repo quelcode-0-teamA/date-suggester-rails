@@ -1,4 +1,12 @@
 class Plan < ApplicationRecord
+  has_many :plan_spots
+
+  def recalculation_total_budget
+    sum = 0
+    plan_spots.each { |i| sum += i.spot[:budget] }
+    update(total_budget: sum)
+  end
+
   def self.suggest(params)
     budget_range = get_date_budget(params)
     date_area = params[:date_area]
