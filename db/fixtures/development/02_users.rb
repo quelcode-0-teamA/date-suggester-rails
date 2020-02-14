@@ -1,7 +1,7 @@
-(1..4).each do |n|
-  birth_year = 1980 + 5 * n
+(1..4).each do |i|
+  birth_year = 1980 + 5 * i
   User.seed do |s|
-    s.id = n
+    s.id = i
     s.email = "seed_#{birth_year}@example.com"
     s.name = "seed_#{birth_year}"
     s.birth_year = birth_year

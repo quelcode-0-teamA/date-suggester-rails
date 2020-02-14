@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_12_045132) do
+ActiveRecord::Schema.define(version: 2020_02_14_041624) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,18 @@ ActiveRecord::Schema.define(version: 2020_02_12_045132) do
     t.datetime "updated_at", null: false
     t.index ["plan_id"], name: "index_my_plans_on_plan_id"
     t.index ["user_id"], name: "index_my_plans_on_user_id"
+  end
+
+  create_table "plan_spots", force: :cascade do |t|
+    t.bigint "plan_id", null: false
+    t.bigint "spot_id", null: false
+    t.integer "order", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["plan_id", "order"], name: "index_plan_spots_on_plan_id_and_order", unique: true
+    t.index ["plan_id", "spot_id"], name: "index_plan_spots_on_plan_id_and_spot_id", unique: true
+    t.index ["plan_id"], name: "index_plan_spots_on_plan_id"
+    t.index ["spot_id"], name: "index_plan_spots_on_spot_id"
   end
 
   create_table "plans", force: :cascade do |t|
@@ -77,6 +89,8 @@ ActiveRecord::Schema.define(version: 2020_02_12_045132) do
 
   add_foreign_key "my_plans", "plans"
   add_foreign_key "my_plans", "users"
+  add_foreign_key "plan_spots", "plans"
+  add_foreign_key "plan_spots", "spots"
   add_foreign_key "plans", "areas"
   add_foreign_key "users", "areas"
 end
