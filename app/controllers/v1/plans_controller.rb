@@ -5,7 +5,9 @@ module V1
     def show
       render_serializer(@plan, PlanSerializer)
     end
+
     private
+
       def set_plan
         @plan = Plan.find(params[:id])
       end
