@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'application_helper'
 
 RSpec.describe 'Spots', type: :request do
-    describe 'get /(root)' do
+    describe 'get /v1/spots/{spot_id}' do
         before do
           get '/'
         end
