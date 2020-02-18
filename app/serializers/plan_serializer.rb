@@ -1,6 +1,3 @@
 class PlanSerializer < ActiveModel::Serializer
-    attributes  :id,
-                :title,
-                :description,
-                :area_id
+    attributes  :id
 end
