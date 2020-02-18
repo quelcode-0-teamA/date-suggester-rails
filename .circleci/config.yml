@@ -108,7 +108,10 @@ jobs:
           command: heroku run bundle exec rails db:migrate --app $HEROKU_DEV_APP_NAME
       - run:
           name: Command run rails db:seed_fu
-          command: heroku run bundle exec rails db:seed_fu --app $HEROKU_DEV_APP_NAME
+          command: |
+            heroku run bundle exec rails db:seed_fu \
+            FIXTURE_PATH=./db/fixtures/development \
+            --app $HEROKU_DEV_APP_NAME
       - run:
           name: Mentenance mode OFF
           command: heroku maintenance:off --app $HEROKU_DEV_APP_NAME
