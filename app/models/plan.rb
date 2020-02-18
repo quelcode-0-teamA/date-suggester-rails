@@ -2,9 +2,8 @@ class Plan < ApplicationRecord
   has_many :plan_spots
 
   def recalculation_total_budget
-    sum = 0
-    plan_spots.each { |i| sum += i.spot[:budget] }
-    update(total_budget: sum)
+    total_budget = plan_spots.sum_budget
+    update(total_budget: total_budget)
   end
 
   def self.suggest(params)

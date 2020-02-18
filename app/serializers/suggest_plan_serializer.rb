@@ -10,9 +10,7 @@ class SuggestPlanSerializer < ActiveModel::Serializer
       Area.find(object.area_id).name
     end
     def spots
-        plan_spots = object.plan_spots
-        spots = []
-        plan_spots.each { |a| spots << a.spot }
+        spots = object.plan_spots.includes(:spot).map(&:spot)
         ActiveModel::Serializer::CollectionSerializer.new(
           spots, serializer: SpotSimpleSerializer
         )
