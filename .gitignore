@@ -24,3 +24,6 @@ request.http
 
 # vscode config
 /.vscode/*
+
+#env file
+.env
