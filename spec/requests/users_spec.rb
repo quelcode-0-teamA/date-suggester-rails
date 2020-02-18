@@ -9,11 +9,11 @@ RSpec.describe 'Users', type: :request do
     end
     describe '/v1' do
       before do
-        area = FactoryBot.create(:area)
+        area = create(:area)
         @area_id = area.id
       end
       describe '/sign_up POST' do
-        let(:params) { FactoryBot.attributes_for(:user, area_id: @area_id) }
+        let(:params) { attributes_for(:user, area_id: @area_id) }
         subject { post '/v1/sign_up', params: { "user": params } }
         let(:res_keys) { %w[name email] }
         let(:res_body) do
@@ -24,7 +24,7 @@ RSpec.describe 'Users', type: :request do
         it { expect { subject }.to change(User, :count).by(+1) }
       end
       describe '/login POST' do
-        let(:sign_up_params) { FactoryBot.attributes_for(:user, area_id: @area_id) }
+        let(:sign_up_params) { attributes_for(:user, area_id: @area_id) }
         let!(:user) { User.create(sign_up_params) }
         subject { post '/v1/login', params: @params }
         let(:res_body) do
@@ -55,14 +55,14 @@ RSpec.describe 'Users', type: :request do
   end
   context 'ログイン時' do
     describe '/v1' do
-      let(:user) { FactoryBot.create(:user, :with_area) }
-      let(:different_user) { FactoryBot.create(:user, :with_area) }
+      let(:user) { create(:user, :with_area) }
+      let(:different_user) { create(:user, :with_area) }
       let(:set_not_exist_token) { @options['HTTP_AUTHORIZATION'] = 'Bearer not_exist_token' }
       let(:set_different_token) { @options['HTTP_AUTHORIZATION'] = "Bearer #{different_user.token}" }
       let(:set_not_exist_id) { @user_id = 0 }
       let(:set_different_id) { @user_id = different_user.id }
       before do
-        area = FactoryBot.create(:area)
+        area = create(:area)
         @area_id = area.id
         @user_id = user.id
         @options ||= {}
@@ -70,9 +70,9 @@ RSpec.describe 'Users', type: :request do
       end
       describe '/users/:id' do
         describe 'GET' do
-          subject(:get_users_id) { get "/v1/users/#{@user_id}", headers: @options }
+          subject { get "/v1/users/#{@user_id}", headers: @options }
           let(:res_body) do
-            get_users_id
+            subject
             JSON.parse(response.body)
           end
           it { is_expected.to eq 200 }
@@ -80,11 +80,9 @@ RSpec.describe 'Users', type: :request do
           it_behaves_like ':idがおかしい時', exist: true
         end
         describe 'PUT' do
-          subject(:put_users_id) do
-            put "/v1/users/#{@user_id}", headers: @options, params: @params
-          end
+          subject { put "/v1/users/#{@user_id}", headers: @options, params: @params }
           let(:res_body) do
-            put_users_id
+            subject
             JSON.parse(response.body)
           end
           before do
