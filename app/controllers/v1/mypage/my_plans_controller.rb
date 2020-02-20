@@ -2,7 +2,12 @@ module V1
   module Mypage
     class MyPlansController < ApplicationController
       before_action :authorize!
-      before_action :set_myplan
+      before_action :set_myplan, only: %i[show destroy]
+
+      def index
+        my_plans = @current_user.my_plans
+        render_collection_serializer(my_plans, MyPlanSerializer)
+      end
 
       def create
         myplan = MyPlan.new(user_id: @current_user.id)
@@ -10,24 +15,19 @@ module V1
       end
 
       def show
-        render_serializer(@myplan, MyPlanSerializer)
+        render_serializer(@my_plan, MyPlanSerializer)
       end
 
       def destroy
-        myplan.destroy!
+        @my_plan.destroy!
         render json: { 'message': 'デートプランを削除しました' }
       end
 
       private
 
-        def index
-          @myplans = MyPlan.all
+        def set_my_plan
+          @my_plan = MyPlan.find(params[:id])
         end
-
-        def set_myplan
-          @myplan = MyPlan.find(params[:id])
-        end
-
     end
   end
 end

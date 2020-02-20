@@ -9,4 +9,5 @@ class User < ApplicationRecord
   validates :gender, numericality: true
 
   belongs_to :area
+  has_many :my_plans
 end
