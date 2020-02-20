@@ -5,8 +5,8 @@ module V1
       before_action :set_myplan, only: %i[show destroy]
 
       def index
-        my_plans = @current_user.my_plans
-        render_collection_serializer(my_plans, MyPlanSerializer)
+        my_plans = @current_user.my_plans.recent.includes(plan: :area)
+        render_collection_serializer(my_plans, MyPlansSerializer)
       end
 
       def create
