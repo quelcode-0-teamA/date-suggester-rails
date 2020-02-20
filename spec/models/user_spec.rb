@@ -1,10 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  let(:user) do
-    FactoryBot.build(:user, :with_area)
-  end
-
+  let(:user) { build(:user, :with_area) }
   describe 'Validates' do
     it 'shold be valid' do
       expect(user).to be_valid
@@ -33,17 +30,17 @@ RSpec.describe User, type: :model do
         expect(user).not_to be_valid
       end
       it 'addresses should be unique' do
-        duplicate_user = FactoryBot.build(:user, email: user.email)
+        duplicate_user = build(:user, email: user.email)
         user.save
         expect(duplicate_user).not_to be_valid
       end
       # it 'addresses should be alphabetically unique' do
-      #   user = FactoryBot.create(:user, email: 'JO@examPle.COM')
-      #   duplicate_user = FactoryBot.build(:user, email: user.email.downcase)
+      #   user = create(:user, email: 'JO@examPle.COM')
+      #   duplicate_user = build(:user, email: user.email.downcase)
       #   expect(duplicate_user).not_to be_valid
       # end
       # it 'saves only downcase email' do
-      #   user = FactoryBot.create(:user, email: 'JO@examPle.COM')
+      #   user = create(:user, email: 'JO@examPle.COM')
       #   expect(user.reload.email).to eq 'jo@example.com'
       # end
     end
