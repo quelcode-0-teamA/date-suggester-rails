@@ -2,7 +2,7 @@ module V1
   module Mypage
     class MyPlansController < ApplicationController
       before_action :authorize!
-      before_action :set_myplan, only: %i[show destroy]
+      before_action :set_my_plan, only: %i[show destroy]
 
       def index
         my_plans = @current_user.my_plans.recent.includes(plan: :area)

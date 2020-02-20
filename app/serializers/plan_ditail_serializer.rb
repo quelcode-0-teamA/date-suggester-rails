@@ -1,4 +1,4 @@
-class SuggestPlanSerializer < ActiveModel::Serializer
+class PlanDitailSerializer < ActiveModel::Serializer
   attributes  :id,
               :title,
               :description,
@@ -7,7 +7,7 @@ class SuggestPlanSerializer < ActiveModel::Serializer
               :spots
 
   def area
-    Area.find(object.area_id).name
+    object.area.name
   end
 
   def total_budget
