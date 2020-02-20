@@ -1,6 +1,6 @@
 module V1
   module Mypage
-    class PlansController < ApplicationController
+    class MyPlansController < ApplicationController
       before_action :authorize!
       before_action :set_myplan
 

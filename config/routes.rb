@@ -1,21 +1,19 @@
 Rails.application.routes.draw do
-  root to: 'v1/users#top'
+  root to: 'v1/users#top', format: 'json'
   namespace :v1, format: 'json' do
-    # users
+    # Users
     resources :users, only: %i[show update destroy]
-    post '/sign_up', to: 'users#create'
-    post '/login', to: 'users#login'
-    # plans
+    post 'sign_up', to: 'users#create'
+    post 'login', to: 'users#login'
+    # Plans
     resources :plans, only: %i[show]
-    # spots
+    # Spots
     resources :spots, only: %i[show]
-    # date suggests
-    get '/date-suggest', to: 'date_suggests#suggest'
-    #myPlans
+    # DateSuggests
+    get 'date-suggest', to: 'date_suggests#suggest'
+    # MyPlans
     namespace :mypage do
-      resources :plans, only: %i[show index]
-      post '/plans/:id', to: 'plans#create'
-      put '/plans/:id', to: 'plans#destroy'
+      resources :my_plans, only: %i[create show index destroy]
     end
   end
 end
