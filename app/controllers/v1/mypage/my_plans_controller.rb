@@ -10,8 +10,8 @@ module V1
       end
 
       def create
-        myplan = MyPlan.new(user_id: @current_user.id)
-        render_serializer(@myplan, MyPlanSerializer)
+        my_plan = @current_user.my_plans.create!(plan_id: plan_params[:plan_id])
+        render_serializer(my_plan, MyPlanSerializer)
       end
 
       def show
@@ -27,6 +27,10 @@ module V1
 
         def set_my_plan
           @my_plan = MyPlan.find(params[:id])
+        end
+
+        def plan_params
+          params.require(:plan).permit(:plan_id)
         end
     end
   end

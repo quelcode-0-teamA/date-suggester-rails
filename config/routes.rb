@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     get 'date-suggest', to: 'date_suggests#suggest'
     # MyPlans
     namespace :mypage do
-      resources :my_plans, only: %i[create show index destroy]
+      resources :my_plans, only: %i[index create show destroy]
     end
   end
 end
