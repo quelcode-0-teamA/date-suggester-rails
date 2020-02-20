@@ -1,5 +1,6 @@
 class Plan < ApplicationRecord
   has_many :plan_spots
+  belongs_to :area
 
   def recalculation_total_budget
     total_budget = plan_spots.sum_budget

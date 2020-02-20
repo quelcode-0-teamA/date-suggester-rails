@@ -1,9 +1,12 @@
-class PlanSerializer < ActiveModel::Serializer
+class PlanSimpleSerializer < ActiveModel::Serializer
   attributes  :id,
               :title,
-              :description,
-              :area_id,
+              :area,
               :total_budget
+
+  def area
+    object.area.name
+  end
 
   def total_budget
     "#{object.total_budget.to_s(:delimited, delimiter: ',')}円"
