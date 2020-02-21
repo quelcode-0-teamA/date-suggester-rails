@@ -77,12 +77,12 @@ ActiveRecord::Schema.define(version: 2020_02_23_061122) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email", null: false
-    t.string "password_digest", null: false
+    t.string "email"
+    t.string "password_digest"
     t.string "token", null: false
     t.string "name"
     t.integer "birth_year", null: false
-    t.integer "gender", null: false
+    t.integer "gender"
     t.bigint "area_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
