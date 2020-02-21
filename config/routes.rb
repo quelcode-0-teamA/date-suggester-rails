@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: 'v1/users#top', format: 'json'
+  root 'v1/top#index'
   namespace :v1, format: 'json' do
     # Users
     resources :users, only: %i[show update destroy]

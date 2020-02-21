@@ -1,12 +1,8 @@
 module V1
   class UsersController < ApplicationController
-    before_action :authorize!, except: %i[top create login]
+    before_action :authorize!, except: %i[create login]
     before_action :set_user, only: %i[update destroy show]
     before_action :current_user?, only: %i[update destroy]
-
-    def top
-      render json: { 'welcome!': 'APIサーバー元気に稼働中' }
-    end
 
     def create
       user = User.create!(sign_up_user_params)
