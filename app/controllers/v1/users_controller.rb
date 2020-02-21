@@ -58,7 +58,10 @@ module V1
       end
 
       def user_edit_params
-        params.require(:user).permit(:name, :birth_year, :gender, :area_id)
+        params.require(:user).permit(
+          :name, :email, :birth_year,
+          :gender, :area_id
+        )
       end
   end
 end

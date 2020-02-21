@@ -3,7 +3,7 @@ module V1
     before_action :set_plan, only: %i[show]
 
     def show
-      render_serializer(@plan, PlanSerializer)
+      render_serializer(@plan, PlanDitailSerializer)
     end
 
     private

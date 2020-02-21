@@ -20,7 +20,7 @@ module V1
 
       def destroy
         @my_plan.destroy!
-        render json: { 'message': 'デートプランを削除しました' }
+        render json: { 'message': 'デート予定を取り消しました' }
       end
 
       private
