@@ -17,10 +17,10 @@ RSpec.describe User, type: :model do
       end
     end
     describe 'email' do
-      it 'should be present' do
-        user.email = ''
-        expect(user).not_to be_valid
-      end
+      # it 'should be present' do
+      #   user.email = ''
+      #   expect(user).not_to be_valid
+      # end
       it 'should be proper long' do
         user.email = 'a' * 243 + '@example.com'
         expect(user).to be_valid
@@ -45,20 +45,20 @@ RSpec.describe User, type: :model do
       # end
     end
     describe 'password' do
-      it 'should be present' do
-        user.password = ''
-        user.password_confirmation = ''
-        expect(user).not_to be_valid
-      end
-      it 'confirmation should be present' do
-        user.password_confirmation = ''
-        expect(user).not_to be_valid
-      end
-      it 'not should be invalid' do
-        user.password = 'password'
-        user.password_confirmation = 'pass'
-        expect(user).not_to be_valid
-      end
+      # it 'should be present' do
+      #   user.password = ''
+      #   user.password_confirmation = ''
+      #   expect(user).not_to be_valid
+      # end
+      # it 'confirmation should be present' do
+      #   user.password_confirmation = ''
+      #   expect(user).not_to be_valid
+      # end
+      # it 'not should be invalid' do
+      #   user.password = 'password'
+      #   user.password_confirmation = 'pass'
+      #   expect(user).not_to be_valid
+      # end
     end
   end
 end
