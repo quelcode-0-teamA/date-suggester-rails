@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   namespace :v1, format: 'json' do
     # Users
     resources :users, only: %i[show update destroy]
-    post 'sign_up', to: 'users#create'
+    post 'temp_sign_up', to: 'users#create_temp_user'
+    post 'formal_sign_up', to: 'users#update_from_temp_to_formal'
     post 'login', to: 'users#login'
     # Plans
     resources :plans, only: %i[show]
