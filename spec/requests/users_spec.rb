@@ -107,7 +107,7 @@ RSpec.describe 'Users', type: :request do
         end
         describe 'DELETE' do
           subject { delete "/v1/users/#{@user_id}", headers: @options }
-          it { is_expected.to eq 200 }
+          it { is_expected.to eq 204 }
           it { expect { subject }.to change(User, :count).by(-1) }
           it_behaves_like 'Tokenがおかしい時', exist: true, different: true
           it_behaves_like ':idがおかしい時', exist: true, different: true
