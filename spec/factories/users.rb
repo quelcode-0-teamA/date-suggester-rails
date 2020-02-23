@@ -13,5 +13,6 @@ FactoryBot.define do
 
   factory :area, class: Area do
     name { "東京" }
+    sequence(:order) { |n| n }
   end
 end
