@@ -12,9 +12,10 @@
 end
 
 # Areasマスタ エリア設定きまるまで
-(0...47).each do |i|
+(1..47).each do |i|
   Area.seed do |s|
-    s.id = i + 1
-    s.name = "東京#{i + 1}"
+    s.id = i
+    s.name = "東京#{i}"
+    s.order = i
   end
 end
