@@ -33,7 +33,7 @@ module V1
 
     def destroy
       @user.destroy!
-      render json: { 'message': '正常にUser削除されました' }
+      render status: :no_content
     end
 
     private
@@ -43,7 +43,7 @@ module V1
       end
 
       def current_user?
-        error_message(:unauthorized, '権限がありません') unless @user.id == @current_user.id
+        error_message(:forbidden, '権限がありません') unless @user.id == @current_user.id
       end
 
       def sign_up_user_params
