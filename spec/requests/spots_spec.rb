@@ -3,7 +3,7 @@ require 'application_helper'
 
 RSpec.describe 'Spots', type: :request do
   describe '/v1' do
-    let(:user) { create(:user, :with_area) }
+    let(:user) { create(:user) }
     let(:spot) { create(:spot) }
     let(:set_not_exist_id) { @spot_id = 0 }
     before do

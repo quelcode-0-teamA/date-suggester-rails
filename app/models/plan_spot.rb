@@ -4,6 +4,7 @@ class PlanSpot < ApplicationRecord
   validates :order, numericality: true
 
   belongs_to :spot
+  belongs_to :plan
   scope :sum_budget, -> { includes(:spot).inject(0) { |sum, plan| sum + plan.spot[:budget] } }
 
   def self.add_spot(plan, spot, order)

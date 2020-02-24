@@ -3,8 +3,8 @@ require 'application_helper'
 
 RSpec.describe 'Plans', type: :request do
   describe '/v1' do
-    let(:user) { create(:user, :with_area) }
-    let(:plan) { create(:plan, :with_area) }
+    let(:user) { create(:user) }
+    let(:plan) { create(:plan) }
     let(:set_not_exist_id) { @plan_id = 0 }
     before do
       @plan_id = plan.id
