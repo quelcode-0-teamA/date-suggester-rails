@@ -12,16 +12,6 @@ class ApplicationController < ActionController::API
   rescue_from ActionController::InvalidCrossOriginRequest, with: :render_400
   rescue_from ActionController::InvalidAuthenticityToken, with: :render_422
 
-  def authorize!
-    return if current_user
-
-    render json: { 'message': 'ログインしていません' }, status: :unauthorized
-  end
-
-  def current_user
-    @current_user ||= User.find_by(token: bearer_token)
-  end
-
   def render_serializer(data, set_serializer, status = :ok)
     render json: data, serializer: set_serializer, status: status
   end
@@ -32,8 +22,11 @@ class ApplicationController < ActionController::API
     )
   end
 
-  def error_message(status, message)
-    render json: { 'message': message }, status: status
+  def render_error_message(message, errors, status)
+    render json: {
+      message: message,
+      errors: errors
+    }, status: status
   end
 
   def render_400(error)
@@ -42,6 +35,12 @@ class ApplicationController < ActionController::API
       message: 'Bad Request',
       errors: error.message
     }, status: :bad_request
+  end
+
+  def render_401
+    render json: {
+      message: 'Unauthorized'
+    }, status: :unauthorized
   end
 
   def render_403
@@ -80,6 +79,16 @@ class ApplicationController < ActionController::API
   end
 
   private
+
+    def authorize!
+      return if current_user
+
+      render_401
+    end
+
+    def current_user
+      @current_user ||= User.find_by(token: bearer_token)
+    end
 
     def bearer_token
       authenticate_with_http_token { |t| t }
