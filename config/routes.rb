@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
-  root to: 'v1/users#top', format: 'json'
+  root 'v1/top#index'
   namespace :v1, format: 'json' do
     # Users
     resources :users, only: %i[show update destroy]
-    post 'sign_up', to: 'users#create'
+    post 'temp_sign_up', to: 'users#create_temp_user'
+    post 'formal_sign_up', to: 'users#update_from_temp_to_formal'
     post 'login', to: 'users#login'
     # Areas
     resources :areas, only: %i[index]

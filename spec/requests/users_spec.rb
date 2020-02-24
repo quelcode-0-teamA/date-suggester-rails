@@ -12,10 +12,9 @@ RSpec.describe 'Users', type: :request do
         area = create(:area)
         @area_id = area.id
       end
-      describe '/sign_up POST' do
-        let(:params) { attributes_for(:user, area_id: @area_id) }
-        subject { post '/v1/sign_up', params: { "user": params } }
-        let(:res_keys) { %w[name email] }
+      describe '/temp_sign_up POST' do
+        subject { post '/v1/temp_sign_up', params: { "temp_user": params } }
+        let(:params) { attributes_for(:temp_user, area_id: @area_id) }
         let(:res_body) do
           subject
           JSON.parse(response.body)
@@ -23,10 +22,17 @@ RSpec.describe 'Users', type: :request do
         it { is_expected.to eq 200 }
         it { expect { subject }.to change(User, :count).by(+1) }
       end
+      describe '/formal_sign_up POST' do
+        subject { post '/v1/formal_sign_up', headers: options , params: { "formal_user": params } }
+        let(:temp_user) { create(:temp_user, :with_area) }
+        let(:params) { attributes_for(:formal_user) }
+        let(:options) { { HTTP_AUTHORIZATION: "Bearer #{temp_user.token}" } }
+        it { is_expected.to eq 200 }
+      end
       describe '/login POST' do
-        let(:sign_up_params) { attributes_for(:user, area_id: @area_id) }
-        let!(:user) { User.create(sign_up_params) }
         subject { post '/v1/login', params: @params }
+        let!(:user) { User.create(sign_up_params) }
+        let(:sign_up_params) { attributes_for(:user, area_id: @area_id) }
         let(:res_body) do
           subject
           JSON.parse(response.body)
