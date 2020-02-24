@@ -71,8 +71,7 @@ RSpec.describe 'Users', type: :request do
         area = create(:area)
         @area_id = area.id
         @user_id = user.id
-        @options ||= {}
-        @options['HTTP_AUTHORIZATION'] = "Bearer #{user.token}"
+        @options = { HTTP_AUTHORIZATION: "Bearer #{user.token}" }
       end
       describe '/users/:id' do
         describe 'GET' do

@@ -8,8 +8,7 @@ RSpec.describe 'Spots', type: :request do
     let(:set_not_exist_id) { @spot_id = 0 }
     before do
       @spot_id = spot.id
-      @options ||= {}
-      @options['HTTP_AUTHORIZATION'] = "Bearer #{user.token}"
+      @options = { HTTP_AUTHORIZATION: "Bearer #{user.token}" }
     end
     describe '/spots/:id' do
       describe 'GET'do

@@ -23,9 +23,4 @@ FactoryBot.define do
     password { 'password' }
     password_confirmation { 'password' }
   end
-
-  factory :area, class: Area do
-    name { "東京" }
-    sequence(:order) { |n| n }
-  end
 end
