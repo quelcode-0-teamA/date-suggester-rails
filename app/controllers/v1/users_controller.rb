@@ -19,7 +19,11 @@ module V1
       if user&.authenticate(login_params[:password])
         render_serializer(user, MeSerializer)
       else
-        error_message(:unauthorized, 'ログインに失敗しました')
+        render_error_message(
+          'Unauthorized',
+          'ログインに失敗しました',
+          :unauthorized
+        )
       end
     end
 
@@ -34,7 +38,7 @@ module V1
 
     def destroy
       @user.destroy!
-      render json: { 'message': '正常にUser削除されました' }
+      render status: :no_content
     end
 
     private
@@ -44,7 +48,7 @@ module V1
       end
 
       def current_user?
-        error_message(:unauthorized, '権限がありません') unless @user.id == @current_user.id
+        render_403 unless @user.id == @current_user.id
       end
 
       def sign_up_temp_user_params
