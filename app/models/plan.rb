@@ -8,7 +8,7 @@ class Plan < ApplicationRecord
   end
 
   def self.suggest(params)
-    budget_range = get_date_budget(params)
+    budget_range = get_date_budget(params[:birth_year], params[:date_budget].to_i)
     sort_params = {
       budget_range: budget_range,
       date_area: params[:date_area],
@@ -24,10 +24,10 @@ class Plan < ApplicationRecord
         .where(area_id: sort_params[:date_area])
   end
 
-  def self.get_date_budget(params)
-    tens_place_age, early_or_late = trans_age(params[:birth_year].to_i)
+  def self.get_date_budget(birth_year, date_budget)
+    tens_place_age, early_or_late = trans_age(birth_year)
     standard_budget = UserType.get_budget(tens_place_age, early_or_late)
-    date_budget(standard_budget, params[:date_budget].to_i)
+    date_budget(standard_budget, date_budget)
   end
 
   def self.trans_age(birth_year)
