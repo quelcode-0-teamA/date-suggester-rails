@@ -17,25 +17,11 @@ RSpec.describe User, type: :model do
           expect(user).not_to be_valid
         end
       end
-      describe 'email' do
-        it 'should be proper long' do
-          user.email = 'a' * 243 + '@example.com'
-          expect(user).to be_valid
-        end
-        it 'should not be too long' do
-          user.email = 'a' * 244 + '@example.com'
-          expect(user).not_to be_valid
-        end
-        it 'addresses should be unique' do
-          duplicate_user = build(:user, email: user.email)
-          user.save
-          expect(duplicate_user).not_to be_valid
-        end
-      end
     end
   end
   describe 'update' do
     let(:temp_user) { create(:temp_user) }
+    let(:different_user) { create(:temp_user) }
     let(:params) { attributes_for(:formal_user) }
     describe 'Validates' do
       it 'shold be valid' do
@@ -46,6 +32,18 @@ RSpec.describe User, type: :model do
         it 'should be present' do
           params[:email] = ''
           expect{ temp_user.update!(params) }.to raise_error ActiveRecord::RecordInvalid
+        end
+        it 'should be proper long' do
+          params[:email] = 'a' * 243 + '@example.com'
+          expect{ temp_user.update!(params) }.not_to raise_error ActiveRecord::RecordInvalid
+        end
+        it 'should not be too long' do
+          params[:email] = 'a' * 244 + '@example.com'
+          expect{ temp_user.update!(params) }.to raise_error ActiveRecord::RecordInvalid
+        end
+        it 'addresses should be unique' do
+          temp_user.update!(params)
+          expect{ different_user.update!(params) }.to raise_error ActiveRecord::RecordInvalid
         end
       end
       describe 'password' do
