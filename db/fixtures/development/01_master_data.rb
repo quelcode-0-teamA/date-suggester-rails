@@ -12,10 +12,12 @@
 end
 
 # Areasマスタ エリア設定きまるまで
-(1..47).each do |i|
+require 'csv'
+csv = CSV.read('db/fixtures/development/areas.csv')
+csv.each do |area|
   Area.seed do |s|
-    s.id = i
-    s.name = "東京#{i}"
-    s.order = i
+    s.id = area[0].to_i
+    s.name = area[1]
+    s.order = area[2].to_i
   end
 end
