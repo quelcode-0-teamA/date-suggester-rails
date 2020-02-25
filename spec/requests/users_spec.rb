@@ -2,23 +2,20 @@ require 'rails_helper'
 require 'application_helper'
 
 RSpec.describe 'Users', type: :request do
+  let(:area_id) { (create(:area)).id }
+  let(:res_body) do
+    subject
+    JSON.parse(response.body)
+  end
   context '非ログイン時' do
     describe '/ GET' do
       subject { get '/' }
       it { is_expected.to eq 200 }
     end
     describe '/v1' do
-      before do
-        area = create(:area)
-        @area_id = area.id
-      end
       describe '/temp_sign_up POST' do
         subject { post '/v1/temp_sign_up', params: { "temp_user": params } }
-        let(:params) { attributes_for(:temp_user, area_id: @area_id) }
-        let(:res_body) do
-          subject
-          JSON.parse(response.body)
-        end
+        let(:params) { attributes_for(:temp_user, area_id: area_id) }
         it { is_expected.to eq 200 }
         it { expect { subject }.to change(User, :count).by(+1) }
       end
@@ -32,11 +29,7 @@ RSpec.describe 'Users', type: :request do
       describe '/login POST' do
         subject { post '/v1/login', params: @params }
         let!(:user) { User.create(sign_up_params) }
-        let(:sign_up_params) { attributes_for(:user, area_id: @area_id) }
-        let(:res_body) do
-          subject
-          JSON.parse(response.body)
-        end
+        let(:sign_up_params) { attributes_for(:user, area_id: area_id) }
         before do
           @params = {
             "user": {
@@ -47,13 +40,13 @@ RSpec.describe 'Users', type: :request do
         end
         it { is_expected.to eq 200 }
         context 'paramsが異なる時' do
-          it 'wrong email bad response' do
+          it '異なるemailはUnauthorized' do
             @params[:user][:email] = 'wrong@example.com'
-            expect(subject).not_to eq 200
+            expect(subject).to eq 401
           end
-          it 'wrong password bad response' do
+          it '異なるpasswordはUnauthorized' do
             @params[:user][:password] = 'wrongpassword'
-            expect(subject).not_to eq 200
+            expect(subject).to eq 401
           end
         end
       end
@@ -63,53 +56,41 @@ RSpec.describe 'Users', type: :request do
     describe '/v1' do
       let(:user) { create(:user) }
       let(:different_user) { create(:user) }
-      let(:set_not_exist_token) { @options['HTTP_AUTHORIZATION'] = 'Bearer not_exist_token' }
-      let(:set_different_token) { @options['HTTP_AUTHORIZATION'] = "Bearer #{different_user.token}" }
       let(:set_not_exist_id) { @user_id = 0 }
       let(:set_different_id) { @user_id = different_user.id }
       before do
-        area = create(:area)
-        @area_id = area.id
         @user_id = user.id
         @options = { HTTP_AUTHORIZATION: "Bearer #{user.token}" }
       end
       describe '/users/:id' do
         describe 'GET' do
           subject { get "/v1/users/#{@user_id}", headers: @options }
-          let(:res_body) do
-            subject
-            JSON.parse(response.body)
-          end
           it { is_expected.to eq 200 }
           it_behaves_like 'Tokenがおかしい時', exist: true
           it_behaves_like ':idがおかしい時', exist: true
         end
         describe 'PUT' do
           subject { put "/v1/users/#{@user_id}", headers: @options, params: @params }
-          let(:res_body) do
-            subject
-            JSON.parse(response.body)
-          end
           before do
             @params = {
               "user": {
                 "name": 'edit name',
                 "birth_year": 2000,
                 "gender": 0,
-                "area_id": @area_id,
+                "area_id": area_id,
               }
             }
           end
           it { is_expected.to eq 200 }
           it_behaves_like 'Tokenがおかしい時', exist: true, different: true
-          it_behaves_like ':idがおかしい時', exist: true, different: true
+          it_behaves_like ':idがおかしい時', exist: true
         end
         describe 'DELETE' do
           subject { delete "/v1/users/#{@user_id}", headers: @options }
           it { is_expected.to eq 204 }
           it { expect { subject }.to change(User, :count).by(-1) }
           it_behaves_like 'Tokenがおかしい時', exist: true, different: true
-          it_behaves_like ':idがおかしい時', exist: true, different: true
+          it_behaves_like ':idがおかしい時', exist: true
         end
       end
     end

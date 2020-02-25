@@ -1,4 +1,10 @@
 shared_examples_for 'Tokenがおかしい時' do |exist: false, different: false|
+  let(:set_not_exist_token) do
+    @options['HTTP_AUTHORIZATION'] = 'Bearer not_exist_token'
+  end
+  let(:set_different_token) do
+    @options['HTTP_AUTHORIZATION'] = "Bearer #{different_user.token}"
+  end
   if exist
     it '存在しない 401 Unauthorized' do
       set_not_exist_token
