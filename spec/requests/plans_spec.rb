@@ -2,16 +2,20 @@ require 'rails_helper'
 require 'application_helper'
 
 RSpec.describe 'Plans', type: :request do
-    describe 'get /v1/plans/{plan_id}' do
-        before do
-          get '/v1/plans/{plan_id}'
-        end
-        #it 'response is ok' do
-        #  expect(response).to be_ok
-        #end
-        #it "returns nil test" do
-        #  body = JSON.parse(response.body)
-        #  expect(body["message"]).to eq nil
-        #end
+  describe '/v1' do
+    let(:user) { create(:user) }
+    let(:plan) { create(:plan) }
+    let(:set_not_exist_id) { @plan_id = 0 }
+    before do
+      @plan_id = plan.id
+      @options = { HTTP_AUTHORIZATION: "Bearer #{user.token}" }
     end
+    describe '/plans/:id' do
+      describe 'GET'do
+        subject { get "/v1/plans/#{@plan_id}", headers: @options }
+        it { is_expected.to eq 200 }
+        it_behaves_like ':idがおかしい時', exist: true
+      end
+    end
+  end
 end

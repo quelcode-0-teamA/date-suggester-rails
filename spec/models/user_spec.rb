@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe 'create' do
-    let(:user) { build(:user, :with_area) }
+    let(:user) { build(:user) }
     describe 'Validates' do
       it 'shold be valid' do
         expect(user).to be_valid
@@ -35,7 +35,7 @@ RSpec.describe User, type: :model do
     end
   end
   describe 'update' do
-    let(:temp_user) { create(:temp_user, :with_area) }
+    let(:temp_user) { create(:temp_user) }
     let(:params) { attributes_for(:formal_user) }
     describe 'Validates' do
       it 'shold be valid' do

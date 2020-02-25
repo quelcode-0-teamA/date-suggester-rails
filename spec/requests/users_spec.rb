@@ -24,7 +24,7 @@ RSpec.describe 'Users', type: :request do
       end
       describe '/formal_sign_up POST' do
         subject { post '/v1/formal_sign_up', headers: options , params: { "formal_user": params } }
-        let(:temp_user) { create(:temp_user, :with_area) }
+        let(:temp_user) { create(:temp_user) }
         let(:params) { attributes_for(:formal_user) }
         let(:options) { { HTTP_AUTHORIZATION: "Bearer #{temp_user.token}" } }
         it { is_expected.to eq 200 }
@@ -61,8 +61,8 @@ RSpec.describe 'Users', type: :request do
   end
   context 'ログイン時' do
     describe '/v1' do
-      let(:user) { create(:user, :with_area) }
-      let(:different_user) { create(:user, :with_area) }
+      let(:user) { create(:user) }
+      let(:different_user) { create(:user) }
       let(:set_not_exist_token) { @options['HTTP_AUTHORIZATION'] = 'Bearer not_exist_token' }
       let(:set_different_token) { @options['HTTP_AUTHORIZATION'] = "Bearer #{different_user.token}" }
       let(:set_not_exist_id) { @user_id = 0 }
@@ -71,8 +71,7 @@ RSpec.describe 'Users', type: :request do
         area = create(:area)
         @area_id = area.id
         @user_id = user.id
-        @options ||= {}
-        @options['HTTP_AUTHORIZATION'] = "Bearer #{user.token}"
+        @options = { HTTP_AUTHORIZATION: "Bearer #{user.token}" }
       end
       describe '/users/:id' do
         describe 'GET' do

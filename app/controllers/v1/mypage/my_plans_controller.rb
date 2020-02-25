@@ -3,6 +3,7 @@ module V1
     class MyPlansController < ApplicationController
       before_action :authorize!
       before_action :set_my_plan, only: %i[show destroy]
+      before_action :current_user?, only: %i[show destroy]
 
       def index
         my_plans = @current_user.my_plans.recent.includes(plan: :area)
@@ -27,6 +28,10 @@ module V1
 
         def set_my_plan
           @my_plan = MyPlan.find(params[:id])
+        end
+
+        def current_user?
+          render_403 unless @my_plan.user_id == @current_user.id
         end
 
         def plan_params
