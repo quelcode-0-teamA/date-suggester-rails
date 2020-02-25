@@ -5,14 +5,14 @@ class User < ApplicationRecord
   validate(on: :update) do |record|
     record.errors.add(:password, :blank) if record.password_digest.blank?
   end
-  validates :password, on: :update, length: { maximum: ActiveModel::SecurePassword::MAX_PASSWORD_LENGTH_ALLOWED }
-  validates :password, on: :update, confirmation: { allow_blank: true }
+  validates :password, on: :update, confirmation: { allow_blank: true },
+                       length: { maximum: ActiveModel::SecurePassword::MAX_PASSWORD_LENGTH_ALLOWED }
 
   validates :name, length: { maximum: 20 }
   before_save { self.email = email&.downcase }
-  validates :email, uniqueness: { case_sensitive: false },
-                    length: { maximum: 255 }
-  validates :email, on: :update, presence: true
+  validates :email, on: :update, presence: true, length: { maximum: 255 },
+                    uniqueness: { case_sensitive: false }
+
   validates :birth_year, numericality: true
 
   belongs_to :area
