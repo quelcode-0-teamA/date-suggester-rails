@@ -12,7 +12,17 @@ module V1
     private
 
       def suggest_params
-        request.query_parameters
+        query = request.query_parameters
+        query if query_checked(query)
+      end
+
+      def query_checked(query)
+        keys = %i[date_area date_budget date_time date_type]
+        keys.each do |key|
+          unless  query.key?(key)
+            raise ActionController::ParameterMissing, 'パラメータが不足しています'
+          end
+        end
       end
   end
 end
