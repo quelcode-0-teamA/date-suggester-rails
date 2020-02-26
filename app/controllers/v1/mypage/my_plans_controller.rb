@@ -7,16 +7,16 @@ module V1
 
       def index
         my_plans = @current_user.my_plans.recent.includes(plan: :area)
-        render_collection_serializer(my_plans, MyPlansSerializer)
+        render json: my_plans, each_serializer: MyPlansSerializer
       end
 
       def create
         my_plan = @current_user.my_plans.create!(plan_id: plan_params[:plan_id])
-        render_serializer(my_plan, MyPlanSerializer)
+        render json: my_plan, status: :created
       end
 
       def show
-        render_serializer(@my_plan, MyPlanSerializer)
+        render json: @my_plan
       end
 
       def destroy

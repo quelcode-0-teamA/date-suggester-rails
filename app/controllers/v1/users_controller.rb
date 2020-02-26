@@ -6,18 +6,18 @@ module V1
 
     def create_temp_user
       temp_user = User.create!(sign_up_temp_user_params)
-      render_serializer(temp_user, MeSerializer)
+      render json: temp_user, serializer: MeSerializer, status: :created
     end
 
     def update_from_temp_to_formal
       @current_user.update!(sign_up_formal_user_params)
-      render_serializer(@current_user, MeSerializer)
+      render json: @current_user, serializer: MeSerializer
     end
 
     def login
       user = User.find_by(email: login_params[:email])
       if user&.authenticate(login_params[:password])
-        render_serializer(user, MeSerializer)
+        render json: user, serializer: MeSerializer
       else
         render_error_message(
           'Unauthorized',
@@ -28,12 +28,12 @@ module V1
     end
 
     def show
-      render_serializer(@user, UserSerializer)
+      render json: @user
     end
 
     def update
       @user.update!(user_edit_params)
-      render_serializer(@user, UserSerializer)
+      render json: @user
     end
 
     def destroy

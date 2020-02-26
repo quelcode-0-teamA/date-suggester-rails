@@ -12,16 +12,6 @@ class ApplicationController < ActionController::API
   rescue_from ActionController::InvalidCrossOriginRequest, with: :render_400
   rescue_from ActionController::InvalidAuthenticityToken, with: :render_422
 
-  def render_serializer(data, set_serializer, status = :ok)
-    render json: data, serializer: set_serializer, status: status
-  end
-
-  def render_collection_serializer(datas, set_serializer)
-    render json: ActiveModel::Serializer::CollectionSerializer.new(
-      datas, serializer: set_serializer
-    )
-  end
-
   def render_error_message(message, errors, status)
     render json: {
       message: message,

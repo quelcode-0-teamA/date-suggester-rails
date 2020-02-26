@@ -3,6 +3,6 @@ class MyPlanSerializer < ActiveModel::Serializer
                 :plan
 
     def plan
-        PlanDitailSerializer.new(object.plan)
+        PlanSerializer.new(object.plan)
     end
 end
