@@ -71,12 +71,12 @@ class ApplicationController < ActionController::API
   private
 
     def authorize!
-      return if current_user
+      return if set_current_user
 
       render_401
     end
 
-    def current_user
+    def set_current_user
       @current_user ||= User.find_by(token: bearer_token)
     end
 

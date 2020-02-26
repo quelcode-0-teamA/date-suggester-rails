@@ -62,6 +62,9 @@ Metrics/MethodLength:
 Metrics/ClassLength:
   Max: 120
 
+Naming/MemoizedInstanceVariableName:
+  Enabled: false
+
 ######## Rails ########
 # dependentの指定なし
 Rails/HasManyOrHasOneDependent:
