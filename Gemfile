@@ -7,6 +7,7 @@ gem 'rails', '~> 5.2.4', '>= 5.2.4.1'
 gem 'pg', '~> 1.2', '>= 1.2.2'
 gem 'puma', '~> 4.3', '>= 4.3.1'
 gem 'bootsnap', '~> 1.4', '>= 1.4.5'
+gem "nokogiri", ">= 1.10.8"
 
 gem 'bcrypt', '~> 3.1', '>= 3.1.13'
 gem 'active_model_serializers', '~> 0.10.10'
