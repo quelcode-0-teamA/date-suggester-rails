@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 2020_02_26_061902) do
   create_table "date_types", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "type"
   end
 
   create_table "my_plans", force: :cascade do |t|
