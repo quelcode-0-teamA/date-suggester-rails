@@ -11,7 +11,7 @@
   end
 end
 
-# Areasマスタ エリア設定きまるまで
+# Areasマスタ
 require 'csv'
 csv = CSV.read('db/fixtures/development/areas.csv')
 csv.each do |area|
