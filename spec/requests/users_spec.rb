@@ -16,7 +16,7 @@ RSpec.describe 'Users', type: :request do
       describe '/temp_sign_up POST' do
         subject { post '/v1/temp_sign_up', params: { "temp_user": params } }
         let(:params) { attributes_for(:temp_user, area_id: area_id) }
-        it { is_expected.to eq 200 }
+        it { is_expected.to eq 201 }
         it { expect { subject }.to change(User, :count).by(+1) }
       end
       describe '/formal_sign_up POST' do

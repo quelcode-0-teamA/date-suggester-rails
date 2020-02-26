@@ -6,7 +6,7 @@ module V1
       suggest_params[:user_area] = @current_user.area_id
       suggest_params[:birth_year] = @current_user.birth_year
       suggest_plan = Plan.suggest(suggest_params)
-      render_serializer(suggest_plan, PlanDitailSerializer)
+      render json: suggest_plan
     end
 
     private
