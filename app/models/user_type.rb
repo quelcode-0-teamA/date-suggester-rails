@@ -5,6 +5,8 @@ class UserType < ApplicationRecord
 
   enum early_or_late: { early: 0, late: 1 }
   scope :get_budget, lambda { |tens_place_age, early_or_late|
-    where(tens_place_age: tens_place_age).find_by(early_or_late: early_or_late).standard_budget
+    where(tens_place_age: tens_place_age)
+      .find_by(early_or_late: early_or_late)
+      .standard_budget
   }
 end

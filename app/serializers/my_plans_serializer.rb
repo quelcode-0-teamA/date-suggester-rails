@@ -1,5 +1,6 @@
 class MyPlansSerializer < ActiveModel::Serializer
-  attribute :plan
+  attributes  :id,
+              :plan
 
   def plan
     PlanSimpleSerializer.new(object.plan)

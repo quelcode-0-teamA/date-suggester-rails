@@ -33,10 +33,6 @@ RSpec.describe User, type: :model do
           params[:email] = ''
           expect{ temp_user.update!(params) }.to raise_error ActiveRecord::RecordInvalid
         end
-        it 'should be proper long' do
-          params[:email] = 'a' * 243 + '@example.com'
-          expect{ temp_user.update!(params) }.not_to raise_error ActiveRecord::RecordInvalid
-        end
         it 'should not be too long' do
           params[:email] = 'a' * 244 + '@example.com'
           expect{ temp_user.update!(params) }.to raise_error ActiveRecord::RecordInvalid

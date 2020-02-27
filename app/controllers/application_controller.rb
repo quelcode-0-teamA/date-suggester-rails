@@ -12,21 +12,11 @@ class ApplicationController < ActionController::API
   rescue_from ActionController::InvalidCrossOriginRequest, with: :render_400
   rescue_from ActionController::InvalidAuthenticityToken, with: :render_422
 
-  def render_serializer(data, set_serializer, status = :ok)
-    render json: data, serializer: set_serializer, status: status
-  end
-
-  def render_collection_serializer(datas, set_serializer)
-    render json: ActiveModel::Serializer::CollectionSerializer.new(
-      datas, serializer: set_serializer
-    )
-  end
-
   def render_error_message(message, errors, status)
     render json: {
       message: message,
       errors: errors
-    }, status: status
+    }.to_json, status: status
   end
 
   def render_400(error)
@@ -34,19 +24,19 @@ class ApplicationController < ActionController::API
     render json: {
       message: 'Bad Request',
       errors: error.message
-    }, status: :bad_request
+    }.to_json, status: :bad_request
   end
 
   def render_401
     render json: {
       message: 'Unauthorized'
-    }, status: :unauthorized
+    }.to_json, status: :unauthorized
   end
 
   def render_403
     render json: {
       message: 'Forbidden'
-    }, status: :forbidden
+    }.to_json, status: :forbidden
   end
 
   def render_404(error)
@@ -54,7 +44,7 @@ class ApplicationController < ActionController::API
     render json: {
       message: 'Not Found',
       errors: error.message
-    }, status: :not_found
+    }.to_json, status: :not_found
   end
 
   def render_422(error)
@@ -62,7 +52,7 @@ class ApplicationController < ActionController::API
     render json: {
       message: 'Unprocessable Entity',
       errors: error.message
-    }, status: :unprocessable_entity
+    }.to_json, status: :unprocessable_entity
   end
 
   def render_500(error)
@@ -75,18 +65,18 @@ class ApplicationController < ActionController::API
     render json: {
       message: 'Internal Server Error',
       errors: error.message
-    }, status: :internal_server_error
+    }.to_json, status: :internal_server_error
   end
 
   private
 
     def authorize!
-      return if current_user
+      return if set_current_user
 
       render_401
     end
 
-    def current_user
+    def set_current_user
       @current_user ||= User.find_by(token: bearer_token)
     end
 

@@ -22,7 +22,7 @@ RSpec.describe 'MyPlans', type: :request do
       describe 'POST' do
         subject { post "/v1/mypage/my_plans", params: params, headers: @options }
         let(:params) { { "plan": { "plan_id": plan_id } } }
-        it { is_expected.to eq 200 }
+        it { is_expected.to eq 201 }
         it_behaves_like 'Tokenがおかしい時', exist: true
       end
     end

@@ -3,7 +3,7 @@ module V1
     before_action :set_spot, only: %i[show]
 
     def show
-      render_serializer(@spot, SpotSerializer)
+      render json: @spot
     end
 
     private

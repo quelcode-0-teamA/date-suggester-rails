@@ -6,7 +6,6 @@ AllCops:
     - "vendor/**/*"
     - "bin/**"
     - "db/schema.rb"
-    - "app/serializers/**/*"
     - "Guardfile"
     - "config/**/*"
     - "spec/**/*"
@@ -47,7 +46,7 @@ Layout/IndentationConsistency:
 
 # 行の長さを変更
 Layout/LineLength:
-  Max: 120
+  Max: 110
 
 ######## Metrics ########
 # メソッドのサイズ
@@ -62,10 +61,13 @@ Metrics/MethodLength:
 Metrics/ClassLength:
   Max: 120
 
+Naming/MemoizedInstanceVariableName:
+  Enabled: false
+
 ######## Rails ########
 # dependentの指定なし
-Rails/HasManyOrHasOneDependent:
-  Enabled: false
+# Rails/HasManyOrHasOneDependent:
+#   Enabled: false
 
 # inverse_ofの指定なし
 Rails/InverseOf:
