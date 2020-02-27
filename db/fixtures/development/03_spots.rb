@@ -1,7 +1,7 @@
-(0..20).each do |i|
-  budget = i < 10 ? 500 * i : 500 * rand(15)
+(1..20).each do |i|
+  budget = 500 * (i / 2)
   Spot.seed do |s|
-    s.id = i + 1
+    s.id = i
     s.name = "seed_#{budget}"
     s.description = 'description'
     s.budget = budget
