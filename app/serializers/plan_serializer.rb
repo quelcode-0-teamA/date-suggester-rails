@@ -15,9 +15,9 @@ class PlanSerializer < ActiveModel::Serializer
   end
 
   def spots
-      spots = object.plan_spots.includes(:spot).map(&:spot)
-      ActiveModel::Serializer::CollectionSerializer.new(
-        spots, serializer: SpotSimpleSerializer
-      )
+    spots = object.plan_spots.includes(:spot).map(&:spot)
+    ActiveModel::Serializer::CollectionSerializer.new(
+      spots, serializer: SpotSimpleSerializer
+    )
   end
 end

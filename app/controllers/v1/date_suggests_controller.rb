@@ -25,7 +25,7 @@ module V1
       def query_checked(query)
         keys = %i[date_area date_budget date_time date_type]
         keys.each do |key|
-          unless  query.key?(key)
+          unless query.key?(key)
             raise ActionController::ParameterMissing, "#{key} の必須パラメータが送られていません。"
           end
         end
