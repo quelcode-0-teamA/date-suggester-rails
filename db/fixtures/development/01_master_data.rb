@@ -21,3 +21,12 @@ csv.each do |area|
     s.order = area[2].to_i
   end
 end
+
+# DateTypeマスタ
+date_types = CSV.read('db/fixtures/development/date_types.csv')
+date_types.each do |date_type|
+  DateType.seed do |s|
+    s.id = date_type[0].to_i
+    s.name = date_type[1]
+  end
+end
