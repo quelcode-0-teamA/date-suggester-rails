@@ -1,3 +1,5 @@
+require 'csv'
+
 # UserTypesマスタ
 (0..9).each do |i|
   (0..1).each do |n|
@@ -12,9 +14,8 @@
 end
 
 # Areasマスタ
-require 'csv'
-csv = CSV.read('db/fixtures/development/areas.csv')
-csv.each do |area|
+areas = CSV.read('db/fixtures/development/areas.csv')
+areas.each do |area|
   Area.seed do |s|
     s.id = area[0].to_i
     s.name = area[1]

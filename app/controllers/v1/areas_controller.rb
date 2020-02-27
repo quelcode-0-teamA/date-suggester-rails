@@ -1,7 +1,7 @@
 module V1
   class AreasController < ApplicationController
     def index
-      areas = Area.all.order_asc
+      areas = Area.where('"order" > ?', 0).order_asc
       render json: areas
     end
   end
