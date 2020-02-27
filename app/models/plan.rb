@@ -1,5 +1,5 @@
 class Plan < ApplicationRecord
-  has_many :plan_spots
+  has_many :plan_spots, dependent: :destroy
   belongs_to :area
 
   def recalculation_total_budget

@@ -16,5 +16,5 @@ class User < ApplicationRecord
   validates :birth_year, numericality: true
 
   belongs_to :area
-  has_many :my_plans
+  has_many :my_plans, dependent: :destroy
 end
