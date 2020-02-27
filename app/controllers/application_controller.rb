@@ -16,7 +16,7 @@ class ApplicationController < ActionController::API
     render json: {
       message: message,
       errors: errors
-    }, status: status
+    }.to_json, status: status
   end
 
   def render_400(error)
@@ -24,19 +24,19 @@ class ApplicationController < ActionController::API
     render json: {
       message: 'Bad Request',
       errors: error.message
-    }, status: :bad_request
+    }.to_json, status: :bad_request
   end
 
   def render_401
     render json: {
       message: 'Unauthorized'
-    }, status: :unauthorized
+    }.to_json, status: :unauthorized
   end
 
   def render_403
     render json: {
       message: 'Forbidden'
-    }, status: :forbidden
+    }.to_json, status: :forbidden
   end
 
   def render_404(error)
@@ -44,7 +44,7 @@ class ApplicationController < ActionController::API
     render json: {
       message: 'Not Found',
       errors: error.message
-    }, status: :not_found
+    }.to_json, status: :not_found
   end
 
   def render_422(error)
@@ -52,7 +52,7 @@ class ApplicationController < ActionController::API
     render json: {
       message: 'Unprocessable Entity',
       errors: error.message
-    }, status: :unprocessable_entity
+    }.to_json, status: :unprocessable_entity
   end
 
   def render_500(error)
@@ -65,7 +65,7 @@ class ApplicationController < ActionController::API
     render json: {
       message: 'Internal Server Error',
       errors: error.message
-    }, status: :internal_server_error
+    }.to_json, status: :internal_server_error
   end
 
   private
