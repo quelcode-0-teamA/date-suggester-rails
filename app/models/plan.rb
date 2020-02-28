@@ -15,7 +15,7 @@ class Plan < ApplicationRecord
 
     def sort_plans(params)
       budget_range = get_date_budget(params[:birth_year], params[:date_budget].to_i)
-      areas = get_areas(params[:user_area])
+      areas = get_areas(params[:user_area], params[:date_area])
       Plan.where(total_budget: budget_range[0]...budget_range[1])
           .where(area: areas)
     end
@@ -50,9 +50,16 @@ class Plan < ApplicationRecord
       end
     end
 
-    def get_areas(user_area)
+    def get_areas(user_area, date_area)
       area = Area.find(user_area)
-      Area.where(region: area.region)
+      case date_area.to_i
+      when 0
+        Area.where(region: area.region)
+      when 1
+        Area.where.not(region: [0, area.region_before_type_cast])
+      else
+        raise ActionController::ParameterMissing, 'date_area の値が異常です'
+      end
     end
   end
   private_class_method :get_date_budget, :trans_age, :date_budget

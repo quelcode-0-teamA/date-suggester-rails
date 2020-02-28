@@ -76,7 +76,7 @@ RSpec.describe 'Users', type: :request do
               "user": {
                 "name": 'edit name',
                 "birth_year": 2000,
-                "gender": 0,
+                "gender": 'male',
                 "area_id": area_id,
               }
             }
