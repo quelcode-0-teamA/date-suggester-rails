@@ -20,6 +20,7 @@ areas.each do |area|
     s.id = area[0].to_i
     s.name = area[1]
     s.order = area[2].to_i
+    s.region = area[3]
   end
 end
 

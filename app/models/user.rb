@@ -12,8 +12,8 @@ class User < ApplicationRecord
   before_save { self.email = email&.downcase }
   validates :email, on: :update, presence: true, length: { maximum: 255 },
                     uniqueness: { case_sensitive: false }
-
   validates :birth_year, numericality: true
+  enum gender: { unknown: 0, male: 1, female: 2 }
 
   belongs_to :area
   has_many :my_plans, dependent: :destroy
