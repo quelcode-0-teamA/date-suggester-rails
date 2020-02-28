@@ -61,6 +61,10 @@ Metrics/MethodLength:
 Metrics/ClassLength:
   Max: 120
 
+# メソッド内の循環的な複雑さ
+Metrics/CyclomaticComplexity:
+  Max: 7
+
 Naming/MemoizedInstanceVariableName:
   Enabled: false
 
