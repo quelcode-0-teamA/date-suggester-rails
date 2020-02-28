@@ -1,8 +1,7 @@
 module V1
   class UsersController < ApplicationController
     before_action :authorize!, except: %i[create_temp_user login]
-    before_action :set_user, only: %i[update destroy show]
-    before_action :current_user?, only: %i[update destroy]
+    before_action :set_user, only: %i[show]
 
     def create_temp_user
       temp_user = User.create!(sign_up_temp_user_params)
@@ -31,24 +30,10 @@ module V1
       render json: @user
     end
 
-    def update
-      @user.update!(user_edit_params)
-      render json: @user
-    end
-
-    def destroy
-      @user.destroy!
-      render status: :no_content
-    end
-
     private
 
       def set_user
         @user = User.find(params[:id])
-      end
-
-      def current_user?
-        render_403 unless @user.id == @current_user.id
       end
 
       def sign_up_temp_user_params
