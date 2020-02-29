@@ -21,7 +21,7 @@ module V1
 
       def destroy
         @my_plan.destroy!
-        render status: :no_content
+        head :no_content
       end
 
       private

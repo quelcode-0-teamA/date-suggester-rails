@@ -17,11 +17,7 @@ module V1
       if user&.authenticate(login_params[:password])
         render json: user, serializer: MeSerializer
       else
-        render_error_message(
-          'Unauthorized',
-          'ログインに失敗しました',
-          :unauthorized
-        )
+        render_401
       end
     end
 
