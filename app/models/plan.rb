@@ -13,9 +13,13 @@ class Plan < ApplicationRecord
       .where(area: areas)
   }
 
+  def add_spot(spot, order)
+    plan_spots.create!(spot: spot, order: order)
+  end
+
   def recalculation_total_budget
-    total_budget = plan_spots.sum_budget
-    update(total_budget: total_budget)
+    total_budget = plan_spots.sum_budget_for_spots
+    update!(total_budget: total_budget)
   end
 
   class << self
@@ -25,7 +29,7 @@ class Plan < ApplicationRecord
     end
 
     def sort_plans(params)
-      budget_range = get_date_budget(params[:birth_year], params[:date_budget].to_i)
+      budget_range = calculation_budget_range(params[:birth_year], params[:date_budget].to_i)
       date_area = params[:date_area].to_i
       user_region = Area.find(params[:user_area]).region_before_type_cast
       sort_plans = sorted(budget_range, date_area, user_region)
@@ -40,9 +44,10 @@ class Plan < ApplicationRecord
 
     def re_sort(budget_range, date_area, user_region)
       factor = 1
-      cnt = 0
       sort_plans = []
       while sort_plans.blank?
+        break [] if factor >= REGION_MAX_ID
+
         user_region + factor <= REGION_MAX_ID ? user_region += 1 : user_region = 1
         sort_plans = sorted(budget_range, date_area, user_region)
         return sort_plans if sort_plans.present?
@@ -52,14 +57,12 @@ class Plan < ApplicationRecord
         return sort_plans if sort_plans.present?
 
         factor += 2
-        cnt += 1
-        break if cnt == (REGION_MAX_ID / 2.0).round
       end
     end
 
-    def get_date_budget(birth_year, date_budget)
+    def calculation_budget_range(birth_year, date_budget)
       standard_budget = get_standard_budget(birth_year)
-      date_budget(standard_budget, date_budget)
+      to_budget_range(standard_budget, date_budget)
     end
 
     def get_standard_budget(birth_year)
@@ -74,7 +77,7 @@ class Plan < ApplicationRecord
       [tens_place_age, early_or_late]
     end
 
-    def date_budget(standard_budget, date_budget)
+    def to_budget_range(standard_budget, date_budget)
       case date_budget
       when 0
         [(standard_budget * 0).round, (standard_budget * 0.7).round]
@@ -98,5 +101,6 @@ class Plan < ApplicationRecord
       end
     end
   end
-  private_class_method :get_date_budget, :trans_age, :date_budget
+  private_class_method :sort_plans, :sorted, :re_sort, :calculation_budget_range,
+                       :get_standard_budget, :trans_age, :to_budget_range, :get_areas
 end
