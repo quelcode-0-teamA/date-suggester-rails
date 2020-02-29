@@ -14,21 +14,19 @@ require 'csv'
 end
 
 # Areasマスタ
-areas = CSV.read('db/fixtures/development/areas.csv')
-areas.each do |area|
+CSV.foreach('db/fixtures/development/areas.csv', headers: true) do |area|
   Area.seed do |s|
-    s.id = area[0].to_i
-    s.name = area[1]
-    s.order = area[2].to_i
-    s.region = area[3]
+    s.id = area['id'].to_i
+    s.name = area['area']
+    s.order = area['order'].to_i
+    s.region = area['region']
   end
 end
 
 # DateTypeマスタ
-date_types = CSV.read('db/fixtures/development/date_types.csv')
-date_types.each do |date_type|
+CSV.foreach('db/fixtures/development/date_types.csv', headers: true) do |date_type|
   DateType.seed do |s|
-    s.id = date_type[0].to_i
-    s.name = date_type[1]
+    s.id = date_type['id'].to_i
+    s.name = date_type['date_type']
   end
 end
