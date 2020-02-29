@@ -7,11 +7,9 @@ module V1
       suggest_params[:birth_year] = @current_user.birth_year
       suggest_plan = Plan.suggest(suggest_params)
       if suggest_plan.blank?
-        render json: {
-          'message': 'Not Found',
-          'errors': '検索結果が見つかりませんでした。'
-        }.to_json, status: :not_found and return
+        raise ActiveRecord::RecordNotFound, '検索結果が見つかりませんでした。'
       end
+
       render json: suggest_plan
     end
 

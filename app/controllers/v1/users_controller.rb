@@ -1,7 +1,6 @@
 module V1
   class UsersController < ApplicationController
     before_action :authorize!, except: %i[create_temp_user login]
-    before_action :set_user, only: %i[show]
 
     def create_temp_user
       temp_user = User.create!(sign_up_temp_user_params)
@@ -18,23 +17,11 @@ module V1
       if user&.authenticate(login_params[:password])
         render json: user, serializer: MeSerializer
       else
-        render_error_message(
-          'Unauthorized',
-          'ログインに失敗しました',
-          :unauthorized
-        )
+        render_401
       end
-    end
-
-    def show
-      render json: @user
     end
 
     private
-
-      def set_user
-        @user = User.find(params[:id])
-      end
 
       def sign_up_temp_user_params
         params.require(:temp_user).permit(:birth_year, :area_id)
@@ -48,13 +35,6 @@ module V1
 
       def login_params
         params.require(:user).permit(:email, :password)
-      end
-
-      def user_edit_params
-        params.require(:user).permit(
-          :name, :email, :birth_year,
-          :gender, :area_id
-        )
       end
   end
 end
