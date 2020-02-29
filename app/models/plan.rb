@@ -1,9 +1,16 @@
 class Plan < ApplicationRecord
   has_many :plan_spots, dependent: :destroy
   belongs_to :area
+
+  validates :title, presence: true
+  validates :description, presence: true
+  validates :area, presence: true
+  validates :total_budget, numericality: { only_integer: true }
+
   REGION_MAX_ID = 6
   scope :plan_sort, lambda { |budget_range, areas|
-    where(total_budget: budget_range[0]...budget_range[1]).where(area: areas)
+    where(total_budget: budget_range[0]...budget_range[1])
+      .where(area: areas)
   }
 
   def recalculation_total_budget

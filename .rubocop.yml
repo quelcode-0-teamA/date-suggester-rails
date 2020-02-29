@@ -69,17 +69,6 @@ Naming/MemoizedInstanceVariableName:
   Enabled: false
 
 ######## Rails ########
-# dependentの指定なし
-# Rails/HasManyOrHasOneDependent:
-#   Enabled: false
-
-# inverse_ofの指定なし
-Rails/InverseOf:
-  Enabled: false
-
-# migrateのNotNull オフ
-Rails/NotNullColumn:
-  Enabled: false
 
 # GemのOrderの指定なし
 Bundler/OrderedGems:

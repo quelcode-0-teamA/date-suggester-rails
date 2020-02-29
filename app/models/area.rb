@@ -1,6 +1,6 @@
 class Area < ApplicationRecord
   validates :name, presence: true
-
+  validates :order, numericality: { only_integer: true }
   enum region: {
     unknown: 0, ueno_region: 1, ikebukuro_region: 2,
     shinjuku_region: 3, shibuya_region: 4,
