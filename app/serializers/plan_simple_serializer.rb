@@ -2,7 +2,8 @@ class PlanSimpleSerializer < ActiveModel::Serializer
   attributes  :id,
               :title,
               :area,
-              :total_budget
+              :total_budget,
+              :thumb
 
   def area
     object.area.name
