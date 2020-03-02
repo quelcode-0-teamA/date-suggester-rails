@@ -82,9 +82,9 @@ class Plan < ApplicationRecord
       when 0
         [(standard_budget * 0).round, (standard_budget * 0.7).round]
       when 1
-        [(standard_budget * 0.7).round, (standard_budget * 2).round]
+        [(standard_budget * 0.7).round, (standard_budget * 1.6).round]
       when 2
-        [(standard_budget * 2).round, (standard_budget * 4).round]
+        [(standard_budget * 1.6).round, (standard_budget * 3).round]
       else
         raise ActionController::ParameterMissing, 'date_budget の値が異常です'
       end

@@ -9,9 +9,9 @@ id,area,order,region
 8,新宿,8,shinjuku_region
 9,原宿,9,shibuya_region
 10,渋谷,10,shibuya_region
-11,恵比寿,11,shibuya_region
+11,恵比寿,11,ebisu_region
 12,目黒,12,ebisu_region
 13,代官山,13,ebisu_region
 14,中目黒,0,ebisu_region
-15,自由が丘,15,unknown
+15,自由が丘,0,unknown
 16,横浜,0,unknown
