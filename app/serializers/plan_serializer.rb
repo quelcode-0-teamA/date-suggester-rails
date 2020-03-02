@@ -4,6 +4,7 @@ class PlanSerializer < ActiveModel::Serializer
               :description,
               :area,
               :total_budget,
+              :thumb,
               :spots
 
   def area

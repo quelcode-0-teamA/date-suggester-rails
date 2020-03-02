@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_28_035452) do
+ActiveRecord::Schema.define(version: 2020_03_01_101635) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 2020_02_28_035452) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "total_budget", default: 0, null: false
+    t.string "thumb", default: "https://date-suggester.s3-ap-northeast-1.amazonaws.com/plan_default.jpg", null: false
     t.index ["area_id"], name: "index_plans_on_area_id"
     t.index ["total_budget"], name: "index_plans_on_total_budget"
   end
@@ -70,6 +71,7 @@ ActiveRecord::Schema.define(version: 2020_02_28_035452) do
     t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "thumb", default: "https://date-suggester.s3-ap-northeast-1.amazonaws.com/spot_default.jpg", null: false
   end
 
   create_table "user_types", force: :cascade do |t|

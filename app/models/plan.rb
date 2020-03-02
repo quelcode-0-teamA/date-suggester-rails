@@ -95,7 +95,15 @@ class Plan < ApplicationRecord
       when 0
         Area.where(region: user_region)
       when 1
-        Area.where.not(region: [0, user_region])
+        exclusion_region = [0, user_region]
+        if user_region + 1 > REGION_MAX_ID
+          exclusion_region.push(1, user_region - 1)
+        elsif user_region - 1 <= 0
+          exclusion_region.push(REGION_MAX_ID, user_region + 1)
+        else
+          exclusion_region.push(user_region + 1, user_region - 1)
+        end
+        Area.where.not(region: exclusion_region)
       else
         raise ActionController::ParameterMissing, 'date_area の値が異常です'
       end

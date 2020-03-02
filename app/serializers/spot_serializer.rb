@@ -3,6 +3,7 @@ class SpotSerializer < ActiveModel::Serializer
               :name,
               :description,
               :budget,
+              :thumb,
               :tel,
               :url
 
