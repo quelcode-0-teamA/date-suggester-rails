@@ -43,20 +43,36 @@ class Plan < ApplicationRecord
     end
 
     def re_sort(budget_range, date_area, user_region)
-      factor = 1
+      count_num = 1
       sort_plans = []
       while sort_plans.blank?
-        break [] if factor >= REGION_MAX_ID
+        break [] if count_num >= REGION_MAX_ID
 
-        user_region + factor <= REGION_MAX_ID ? user_region += 1 : user_region = 1
+        user_region = increase_region_id(user_region, count_num)
         sort_plans = sorted(budget_range, date_area, user_region)
         return sort_plans if sort_plans.present?
 
-        (user_region - (factor + 1)).positive? ? user_region -= 1 : user_region = REGION_MAX_ID
+        user_region = reduce_region_id(user_region, count_num)
         sort_plans = sorted(budget_range, date_area, user_region)
         return sort_plans if sort_plans.present?
 
-        factor += 2
+        count_num += 2
+      end
+    end
+
+    def increase_region_id(user_region, count_num)
+      if user_region + count_num <= REGION_MAX_ID
+        user_region + count_num
+      else
+        user_region + count_num - REGION_MAX_ID
+      end
+    end
+
+    def reduce_region_id(user_region, count_num)
+      if (user_region - (count_num + 1)).positive?
+        user_region - (count_num + 1)
+      else
+        user_region - (count_num + 1) + REGION_MAX_ID
       end
     end
 
