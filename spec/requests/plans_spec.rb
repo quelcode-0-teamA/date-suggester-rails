@@ -11,7 +11,7 @@ RSpec.describe 'Plans', type: :request do
       @options = { HTTP_AUTHORIZATION: "Bearer #{user.token}" }
     end
     describe '/plans/:id' do
-      describe 'GET'do
+      describe 'GET' do
         subject { get "/v1/plans/#{@plan_id}", headers: @options }
         it { is_expected.to eq 200 }
         it_behaves_like ':idがおかしい時', exist: true

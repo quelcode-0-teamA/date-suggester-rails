@@ -14,13 +14,13 @@ RSpec.describe 'MyPlans', type: :request do
       my_plan
     end
     describe '/my_plans' do
-      describe 'GET'do
-        subject { get "/v1/mypage/my_plans", headers: @options }
+      describe 'GET' do
+        subject { get '/v1/mypage/my_plans', headers: @options }
         it { is_expected.to eq 200 }
         it_behaves_like 'Tokenがおかしい時', exist: true
       end
       describe 'POST' do
-        subject { post "/v1/mypage/my_plans", params: params, headers: @options }
+        subject { post '/v1/mypage/my_plans', params: params, headers: @options }
         let(:params) { { "plan": { "plan_id": plan_id } } }
         it { is_expected.to eq 201 }
         it_behaves_like 'Tokenがおかしい時', exist: true
