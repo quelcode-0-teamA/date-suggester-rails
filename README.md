@@ -14,10 +14,12 @@ $ bundle install
 $ rails db:create
 $ rails db:migrate
 $ rails db:seed_fu
+$ bundle exec rails s
 ```
 
 # Usage
 
-https://api-date-suggester-dev.herokuapp.com/ にデプロイしてあります。
+開発環境のAPIサーバーはこちらに立ててあります。
+https://api-date-suggester-dev.herokuapp.com/
 
-各APIについては[こちら](https://github.com/quelcode-0-teamA/date-suggester-rails/wiki)をご参照ください。
+各APIについては[APIドキュメント](https://github.com/quelcode-0-teamA/date-suggester-rails/wiki)をご参照ください。
