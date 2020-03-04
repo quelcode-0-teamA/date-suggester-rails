@@ -3,12 +3,8 @@ require:
 
 AllCops:
   Exclude:
-    - "vendor/**/*"
-    - "bin/**"
     - "db/schema.rb"
-    - "Guardfile"
     - "config/**/*"
-    - "spec/**/*"
 
 ######## Style ########
 # 日本語のコメントを許可する
@@ -38,6 +34,16 @@ Style/NumericLiterals:
 # AutoCorrect オフ
 Style/BlockDelimiters:
   AutoCorrect: false
+  Exclude:
+    - "spec/**/*"
+
+Style/BlockComments:
+  Exclude:
+    - "spec/spec_helper.rb"
+
+Style/MixinUsage:
+  Exclude:
+    - "bin/**"
 
 # rubocop 0.8~用の設定項目
 Style/HashEachMethods:
@@ -78,7 +84,9 @@ Metrics/ClassLength:
 
 Metrics/BlockLength:
   Exclude:
+    - "spec/**/*"
     - "lib/tasks/auto_annotate_models.rake"
+    - "Guardfile"
 
 # メソッド内の循環的な複雑さ
 Metrics/CyclomaticComplexity:
