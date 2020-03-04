@@ -45,16 +45,6 @@ Style/MixinUsage:
   Exclude:
     - "bin/**"
 
-# rubocop 0.8~用の設定項目
-Style/HashEachMethods:
-  Enabled: true
-
-Style/HashTransformKeys:
-  Enabled: true
-
-Style/HashTransformValues:
-  Enabled: true
-
 ######## Layout ########
 # private/protected は一段深くインデントする
 Layout/IndentationConsistency:
