@@ -12,7 +12,6 @@ gem 'bcrypt', '~> 3.1', '>= 3.1.13'
 gem 'active_model_serializers', '~> 0.10.10'
 gem 'rack-cors', '~> 1.1', '>= 1.1.1'
 gem 'kaminari', '~> 1.2'
-gem 'enumerize', '~> 2.3', '>= 2.3.1'
 gem 'seed-fu', '~> 2.3', '>= 2.3.9'
 
 group :development, :test do
