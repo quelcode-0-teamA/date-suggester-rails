@@ -48,15 +48,15 @@ jobs:
 
       - restore_cache:
           keys:
-            - date-suggester-rails-{{ checksum "Gemfile.lock" }}
-            - date-suggester-rails-
+            - v2-date-suggester-rails-{{ checksum "Gemfile.lock" }}
+            - v2-date-suggester-rails-
 
       - run:
           name: Bundle Install
           command: bundle check || bundle install --deployment
 
       - save_cache:
-          key: date-suggester-rails-{{ checksum "Gemfile.lock" }}
+          key: v2-date-suggester-rails-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
 
