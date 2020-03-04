@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'application_helper'
 
 RSpec.describe 'Users', type: :request do
-  let(:area_id) { (create(:area)).id }
+  let(:area_id) { create(:area).id }
   let(:res_body) do
     subject
     JSON.parse(response.body)
@@ -20,7 +20,7 @@ RSpec.describe 'Users', type: :request do
         it { expect { subject }.to change(User, :count).by(+1) }
       end
       describe '/formal_sign_up POST' do
-        subject { post '/v1/formal_sign_up', headers: options , params: { "formal_user": params } }
+        subject { post '/v1/formal_sign_up', headers: options, params: { "formal_user": params } }
         let(:temp_user) { create(:temp_user) }
         let(:params) { attributes_for(:formal_user) }
         let(:options) { { HTTP_AUTHORIZATION: "Bearer #{temp_user.token}" } }

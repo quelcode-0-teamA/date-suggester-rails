@@ -1,3 +1,28 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id              :bigint           not null, primary key
+#  birth_year      :integer          not null
+#  email           :string
+#  gender          :integer
+#  name            :string
+#  password_digest :string
+#  token           :string           not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  area_id         :bigint           not null
+#
+# Indexes
+#
+#  index_users_on_area_id  (area_id)
+#  index_users_on_email    (email) UNIQUE
+#  index_users_on_token    (token) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (area_id => areas.id)
+#
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
@@ -31,29 +56,29 @@ RSpec.describe User, type: :model do
       describe 'email' do
         it 'should be present' do
           params[:email] = ''
-          expect{ temp_user.update!(params) }.to raise_error ActiveRecord::RecordInvalid
+          expect { temp_user.update!(params) }.to raise_error ActiveRecord::RecordInvalid
         end
         it 'should not be too long' do
           params[:email] = 'a' * 244 + '@example.com'
-          expect{ temp_user.update!(params) }.to raise_error ActiveRecord::RecordInvalid
+          expect { temp_user.update!(params) }.to raise_error ActiveRecord::RecordInvalid
         end
         it 'addresses should be unique' do
           temp_user.update!(params)
-          expect{ different_user.update!(params) }.to raise_error ActiveRecord::RecordInvalid
+          expect { different_user.update!(params) }.to raise_error ActiveRecord::RecordInvalid
         end
       end
       describe 'password' do
         it 'should be present' do
           params[:password] = ''
-          expect{ temp_user.update!(params) }.to raise_error ActiveRecord::RecordInvalid
+          expect { temp_user.update!(params) }.to raise_error ActiveRecord::RecordInvalid
         end
         it 'confirmation should be present' do
           params[:password_confirmation] = ''
-          expect{ temp_user.update!(params) }.to raise_error ActiveRecord::RecordInvalid
+          expect { temp_user.update!(params) }.to raise_error ActiveRecord::RecordInvalid
         end
         it 'not should be invalid' do
           params[:password_confirmation] = 'pass'
-          expect{ temp_user.update!(params) }.to raise_error ActiveRecord::RecordInvalid
+          expect { temp_user.update!(params) }.to raise_error ActiveRecord::RecordInvalid
         end
       end
     end

@@ -3,12 +3,9 @@ require:
 
 AllCops:
   Exclude:
-    - "vendor/**/*"
-    - "bin/**"
     - "db/schema.rb"
-    - "Guardfile"
+    - "vendor/**/*"
     - "config/**/*"
-    - "spec/**/*"
 
 ######## Style ########
 # 日本語のコメントを許可する
@@ -35,9 +32,29 @@ Style/IfUnlessModifier:
 Style/NumericLiterals:
   MinDigits: 7
 
-# AutoCorrect オフ
+# AutoCorrect オフ specのみオン
 Style/BlockDelimiters:
   AutoCorrect: false
+  Exclude:
+    - "spec/**/*"
+
+# 自動生成ファイル除外
+Style/BlockComments:
+  Exclude:
+    - "spec/spec_helper.rb"
+
+# 自動生成ファイル除外
+Style/MixinUsage:
+  Exclude:
+    - "bin/**"
+
+# rubocop 0.8~用の設定項目
+Style/HashEachMethods:
+  Enabled: true
+Style/HashTransformKeys:
+  Enabled: true
+Style/HashTransformValues:
+  Enabled: true
 
 ######## Layout ########
 # private/protected は一段深くインデントする
@@ -47,6 +64,12 @@ Layout/IndentationConsistency:
 # 行の長さを変更
 Layout/LineLength:
   Max: 110
+  IgnoredPatterns: ['\A#'] # コメントは除外
+
+# 自動生成ファイル除外
+Layout/HashAlignment:
+  Exclude:
+    - "lib/tasks/auto_annotate_models.rake"
 
 ######## Metrics ########
 # メソッドのサイズ
@@ -61,15 +84,17 @@ Metrics/MethodLength:
 Metrics/ClassLength:
   Max: 120
 
-# メソッド内の循環的な複雑さ
-Metrics/CyclomaticComplexity:
-  Max: 7
+# Blockの長さ 自動生成ファイルとspec除外
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*"
+    - "lib/tasks/auto_annotate_models.rake"
+    - "Guardfile"
 
+# メソッド名とインスタンス変数の名前一致させない(予約語被りで外した経緯)
 Naming/MemoizedInstanceVariableName:
   Enabled: false
 
-######## Rails ########
-
-# GemのOrderの指定なし
+# GemのOrderしない
 Bundler/OrderedGems:
   Enabled: false
