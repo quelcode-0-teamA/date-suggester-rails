@@ -57,6 +57,11 @@ Layout/IndentationConsistency:
 # 行の長さを変更
 Layout/LineLength:
   Max: 110
+  IgnoredPatterns: ['\A#']
+
+Layout/HashAlignment:
+  Exclude:
+    - "lib/tasks/auto_annotate_models.rake"
 
 ######## Metrics ########
 # メソッドのサイズ
@@ -70,6 +75,10 @@ Metrics/MethodLength:
 # Classの長さ
 Metrics/ClassLength:
   Max: 120
+
+Metrics/BlockLength:
+  Exclude:
+    - "lib/tasks/auto_annotate_models.rake"
 
 # メソッド内の循環的な複雑さ
 Metrics/CyclomaticComplexity:
