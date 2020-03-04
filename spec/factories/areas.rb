@@ -11,7 +11,8 @@
 #
 # Indexes
 #
-#  index_areas_on_order  (order)
+#  index_areas_on_order   (order)
+#  index_areas_on_region  (region)
 #
 FactoryBot.define do
   factory :area do

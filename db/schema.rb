@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_01_101635) do
+ActiveRecord::Schema.define(version: 2020_03_04_100337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 2020_03_01_101635) do
     t.integer "order", default: 0, null: false
     t.integer "region", default: 0, null: false
     t.index ["order"], name: "index_areas_on_order"
+    t.index ["region"], name: "index_areas_on_region"
   end
 
   create_table "date_types", force: :cascade do |t|
@@ -67,7 +68,7 @@ ActiveRecord::Schema.define(version: 2020_03_01_101635) do
     t.string "name", null: false
     t.text "description", null: false
     t.integer "budget", null: false
-    t.string "tel"
+    t.integer "tel"
     t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

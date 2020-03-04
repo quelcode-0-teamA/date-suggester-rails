@@ -6,7 +6,7 @@
 #  budget      :integer          not null
 #  description :text             not null
 #  name        :string           not null
-#  tel         :string
+#  tel         :integer
 #  thumb       :string           default("https://date-suggester.s3-ap-northeast-1.amazonaws.com/spot_default.jpg"), not null
 #  url         :string
 #  created_at  :datetime         not null
