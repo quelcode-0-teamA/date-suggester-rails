@@ -21,28 +21,15 @@
 #  fk_rails_...  (area_id => areas.id)
 #
 class Plan < ApplicationRecord
+  REGION_MAX_ID = 6
+
   has_many :plan_spots, dependent: :destroy
   belongs_to :area
 
-  validates :title, presence: true
-  validates :description, presence: true
-  validates :area, presence: true
+  validates :title, length: { in: 2..20 }
+  validates :description, length: { in: 2..60 }
+  validates :thumb, format: URI.regexp(%w[http https])
   validates :total_budget, numericality: { only_integer: true }
-
-  REGION_MAX_ID = 6
-  scope :plan_sort, lambda { |budget_range, areas|
-    where(total_budget: budget_range[0]...budget_range[1])
-      .where(area: areas)
-  }
-
-  def add_spot(spot, order)
-    plan_spots.create!(spot: spot, order: order)
-  end
-
-  def recalculation_total_budget
-    total_budget = plan_spots.sum_budget_for_spots
-    update!(total_budget: total_budget)
-  end
 
   class << self
     def suggest(params)
@@ -61,7 +48,8 @@ class Plan < ApplicationRecord
 
     def sorted(budget_range, date_area, user_region)
       areas = get_areas(user_region, date_area)
-      Plan.plan_sort(budget_range, areas)
+      Plan.where(total_budget: budget_range[0]...budget_range[1])
+          .where(area: areas)
     end
 
     def re_sort(budget_range, date_area, user_region)

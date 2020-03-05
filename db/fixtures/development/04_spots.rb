@@ -15,5 +15,4 @@ CSV.foreach('db/fixtures/development/spots.csv', headers: true) do |spot|
     s.order = spot['order'].to_i
     cnt += 1
   end
-  Plan.find(spot['plan_id']).recalculation_total_budget
 end
