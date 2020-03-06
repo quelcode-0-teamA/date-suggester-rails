@@ -5,7 +5,7 @@ module V1
       before_action :current_user?, only: %i[show destroy]
 
       def index
-        my_plans = @current_user.my_plans.recent.includes(plan: :area)
+        my_plans = @current_user.my_plans.recent.preload(plan: :area)
         render json: my_plans, each_serializer: MyPlansSerializer
       end
 
