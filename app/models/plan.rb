@@ -38,9 +38,9 @@ class Plan < ApplicationRecord
     end
 
     def sort_plans(params)
-      budget_range = calculation_budget_range(params[:birth_year], params[:date_budget].to_i)
-      date_area = params[:date_area].to_i
-      user_region = Area.find(params[:user_area]).region_before_type_cast
+      budget_range = calculation_budget_range(params.birth_year, params.date_budget)
+      date_area = params.date_area
+      user_region = Area.find(params.user_area).region_before_type_cast
       sort_plans = sorted(budget_range, date_area, user_region)
       sort_plans = re_sort(budget_range, date_area, user_region) if sort_plans.blank?
       sort_plans
