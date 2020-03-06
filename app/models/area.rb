@@ -23,4 +23,6 @@ class Area < ApplicationRecord
 
   validates :name, presence: true
   validates :order, numericality: { only_integer: true }
+
+  scope :with_active, -> { where('"order" > ?', 0).order_asc }
 end
