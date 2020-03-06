@@ -34,6 +34,8 @@ class Plan < ApplicationRecord
   class << self
     def suggest(params)
       sorted_plans = sort_plans(params)
+      raise ActiveRecord::RecordNotFound, '検索結果が見つかりませんでした。' if suggest_plan.blank?
+
       sorted_plans.sample
     end
 

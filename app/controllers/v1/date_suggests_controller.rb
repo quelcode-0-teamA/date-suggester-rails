@@ -5,12 +5,7 @@ module V1
     def suggest
       suggest_params[:user_area] = @current_user.area_id
       suggest_params[:birth_year] = @current_user.birth_year
-      suggest_plan = Plan.suggest(suggest_params)
-      if suggest_plan.blank?
-        raise ActiveRecord::RecordNotFound, '検索結果が見つかりませんでした。'
-      end
-
-      render json: suggest_plan
+      render json: Plan.suggest(suggest_params)
     end
 
     private
