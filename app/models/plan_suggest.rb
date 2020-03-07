@@ -12,7 +12,7 @@ class PlanSuggest
     private
 
       def check_suggest_params(params)
-        suggest_params = SuggestParam.new(params)
+        suggest_params = PlanSuggestParam.new(params)
         suggest_params if suggest_params.valid?
       end
 
