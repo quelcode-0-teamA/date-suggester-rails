@@ -31,7 +31,7 @@ class PlanSpot < ApplicationRecord
 
   after_save :recalculation_total_budget
 
-  scope :sum_budget_for_spots, -> { includes(:spot).inject(0) { |sum, plan| sum + plan.spot[:budget] } }
+  scope :sum_budget_for_spots, -> { eager_load(:spot).inject(0) { |sum, plan| sum + plan.spot[:budget] } }
 
   def recalculation_total_budget
     plan.update(total_budget: plan.plan_spots.sum_budget_for_spots)

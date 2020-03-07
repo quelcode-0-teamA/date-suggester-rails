@@ -2,11 +2,10 @@ module V1
   module Mypage
     class MyPlansController < ApplicationController
       before_action :authorize!
-      before_action :set_my_plan, only: %i[show destroy]
       before_action :current_user?, only: %i[show destroy]
 
       def index
-        my_plans = @current_user.my_plans.recent.includes(plan: :area)
+        my_plans = @current_user.my_plans.recent.preload(plan: :area)
         render json: my_plans, each_serializer: MyPlansSerializer
       end
 
@@ -16,22 +15,19 @@ module V1
       end
 
       def show
-        render json: @my_plan
+        render json: MyPlan.find(params[:id])
       end
 
       def destroy
-        @my_plan.destroy!
-        head :no_content
+        my_plan = MyPlan.find(params[:id])
+        head :no_content if my_plan.destroy!
       end
 
       private
 
-        def set_my_plan
-          @my_plan = MyPlan.find(params[:id])
-        end
-
         def current_user?
-          render_403 unless @my_plan.user_id == @current_user.id
+          my_plan = MyPlan.find(params[:id])
+          render_403 unless my_plan.user == @current_user
         end
 
         def plan_params

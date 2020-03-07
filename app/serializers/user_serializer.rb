@@ -29,5 +29,9 @@ class UserSerializer < ActiveModel::Serializer
               :email,
               :birth_year,
               :gender,
-              :area_id
+              :area
+
+  def area
+    AreaSerializer.new(object.area)
+  end
 end

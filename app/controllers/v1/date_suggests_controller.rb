@@ -3,12 +3,7 @@ module V1
     before_action :authorize!
 
     def suggest
-      suggest_plan = Plan.suggest(suggest_params)
-      if suggest_plan.blank?
-        raise ActiveRecord::RecordNotFound, '検索結果が見つかりませんでした。'
-      end
-
-      render json: suggest_plan
+      render json: Plan.suggest(suggest_params)
     end
 
     private
