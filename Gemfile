@@ -19,6 +19,7 @@ group :development, :test do
   gem 'rubocop-rails', '~> 2.4', '>= 2.4.2'
   gem 'pry-rails', '~> 0.3.9'
   gem 'pry-byebug', '~> 3.8'
+  gem 'bullet', '~> 6.1'
 end
 
 group :development do

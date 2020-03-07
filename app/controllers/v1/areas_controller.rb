@@ -1,8 +1,7 @@
 module V1
   class AreasController < ApplicationController
     def index
-      areas = Area.where('"order" > ?', 0).order_asc
-      render json: areas
+      render json: Area.with_active.order(:order)
     end
   end
 end
