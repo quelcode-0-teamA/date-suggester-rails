@@ -3,7 +3,7 @@ module V1
     before_action :authorize!
 
     def suggest
-      render json: Plan.suggest(suggest_params)
+      render json: Plan.suggest!(suggest_params)
     end
 
     private
