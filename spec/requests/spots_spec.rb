@@ -5,8 +5,7 @@ RSpec.describe 'Spots', type: :request do
   describe '/v1' do
     let(:user) { create(:user) }
     let(:options) { { HTTP_AUTHORIZATION: "Bearer #{user.token}" } }
-    let(:spot) { create(:spot) }
-    let(:spot_id) { spot.id }
+    let(:spot_id) { create(:spot).id }
     describe '/spots/:id' do
       describe 'GET' do
         subject { get "/v1/spots/#{spot_id}", headers: options }
