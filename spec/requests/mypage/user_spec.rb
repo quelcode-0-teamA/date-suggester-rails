@@ -13,17 +13,15 @@ RSpec.describe 'User', type: :request do
         it_behaves_like 'Tokenがおかしい時', exist: true
       end
       describe 'PUT' do
-        subject { put '/v1/mypage/user', headers: options, params: @params }
-        before do
-          @params = {
-            "user": {
-              "name": 'edit name',
-              "email": 'edit@email.com',
-              "birth_year": 2000,
-              "gender": 'male',
-              "area_id": area_id
-            }
-          }
+        subject { put '/v1/mypage/user', headers: options, params: params }
+        let(:params) do
+          { "user": {
+            "name": 'edit name',
+            "email": 'edit@email.com',
+            "birth_year": 2000,
+            "gender": 'male',
+            "area_id": area_id
+          } }
         end
         it { is_expected.to eq 200 }
         it_behaves_like 'Tokenがおかしい時', exist: true

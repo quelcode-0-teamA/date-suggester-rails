@@ -18,25 +18,23 @@ RSpec.describe 'Users', type: :request do
       it { is_expected.to eq 200 }
     end
     describe '/login POST' do
-      subject { post '/v1/login', params: @params }
+      subject { post '/v1/login', params: params }
       let!(:user) { User.create(sign_up_params) }
       let(:sign_up_params) { attributes_for(:user, area_id: area_id) }
-      before do
-        @params = {
-          "user": {
-            "email": sign_up_params[:email],
-            "password": sign_up_params[:password]
-          }
-        }
+      let(:params) do
+        { "user": {
+          "email": sign_up_params[:email],
+          "password": sign_up_params[:password]
+        } }
       end
       it { is_expected.to eq 200 }
       context 'paramsが異なる時' do
         it '異なるemailはUnauthorized' do
-          @params[:user][:email] = 'wrong@example.com'
+          params[:user][:email] = 'wrong@example.com'
           expect(subject).to eq 401
         end
         it '異なるpasswordはUnauthorized' do
-          @params[:user][:password] = 'wrongpassword'
+          params[:user][:password] = 'wrongpassword'
           expect(subject).to eq 401
         end
       end
