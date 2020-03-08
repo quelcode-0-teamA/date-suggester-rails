@@ -17,6 +17,7 @@
 FactoryBot.define do
   factory :area do
     name { '新宿' }
+    region { 'shinjuku_region' }
     sequence(:order) { |n| n }
   end
 end
