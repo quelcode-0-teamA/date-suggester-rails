@@ -1,8 +1,8 @@
 module V1
-  class DateSuggestsController < ApplicationController
+  class PlansSuggestController < ApplicationController
     before_action :authorize!
 
-    def suggest
+    def show
       render json: PlanSuggest.suggest!(suggest_params)
     end
 

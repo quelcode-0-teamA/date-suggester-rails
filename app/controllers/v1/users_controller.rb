@@ -1,40 +1,40 @@
 module V1
   class UsersController < ApplicationController
-    before_action :authorize!, except: %i[create_temp_user login]
+    before_action :authorize!
 
-    def create_temp_user
-      temp_user = User.create!(sign_up_temp_user_params)
-      render json: temp_user, serializer: MeSerializer, status: :created
+    def show
+      render json: User.find(params[:id])
     end
 
-    def update_from_temp_to_formal
-      @current_user.update!(sign_up_formal_user_params)
-      render json: @current_user, serializer: MeSerializer
-    end
-
-    def login
-      user = User.find_by(email: login_params[:email])
-      if user&.authenticate(login_params[:password])
-        render json: user, serializer: MeSerializer
+    def update
+      user = User.find(params[:id])
+      if current_user?(user)
+        render json: user if user.update!(user_params)
       else
-        render_401
+        render_403
+      end
+    end
+
+    def destroy
+      user = User.find(params[:id])
+      if current_user?(user)
+        render status: :no_content if user.destroy!
+      else
+        render_403
       end
     end
 
     private
 
-      def sign_up_temp_user_params
-        params.require(:temp_user).permit(:birth_year, :area_id)
+      def current_user?(user)
+        @current_user == user
       end
 
-      def sign_up_formal_user_params
-        params.require(:formal_user).permit(
-          :email, :password, :password_confirmation
+      def user_params
+        params.require(:user).permit(
+          :name, :email, :birth_year,
+          :gender, :area_id
         )
-      end
-
-      def login_params
-        params.require(:user).permit(:email, :password)
       end
   end
 end

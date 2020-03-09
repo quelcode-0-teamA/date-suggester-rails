@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'application_helper'
 
 RSpec.describe 'PlanSuggests', type: :request do
-  describe '/v1/mypage GET' do
+  describe '/v1/plans/suggest GET' do
     let(:user) { create(:user) }
     let(:options) { { HTTP_AUTHORIZATION: "Bearer #{user.token}" } }
     let(:params) do
@@ -13,7 +13,7 @@ RSpec.describe 'PlanSuggests', type: :request do
         "date_type": 0
       }
     end
-    subject { get '/v1/date-suggest', headers: options, params: params }
+    subject { get '/v1/plans/suggest', headers: options, params: params }
     it { is_expected.to eq 200 }
     describe 'date_area' do
       context '1' do
@@ -33,7 +33,6 @@ RSpec.describe 'PlanSuggests', type: :request do
     end
     context 'birth_yearが1995の時' do
       let(:user) { create(:user, birth_year: 1995) }
-      subject { get '/v1/date-suggest', headers: options, params: params }
       it { is_expected.to eq 200 }
       describe 'date_area' do
         context '1' do
