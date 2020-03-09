@@ -16,29 +16,17 @@ module V1
 
     # GET /v1/my_plans/:id(.:format)
     def show
-      my_plan = MyPlan.find(params[:id])
-      if my_plan?(my_plan)
-        render json: my_plan
-      else
-        render_403
-      end
+      my_plan = @current_user.my_plans.find(params[:id])
+      render json: my_plan
     end
 
     # DELETE /v1/my_plans/:id(.:format)
     def destroy
-      my_plan = MyPlan.find(params[:id])
-      if my_plan?(my_plan)
-        head :no_content if my_plan.destroy!
-      else
-        render_403
-      end
+      my_plan = @current_user.my_plans.find(params[:id])
+      head :no_content if my_plan.destroy!
     end
 
     private
-
-      def my_plan?(my_plan)
-        @current_user == my_plan.user
-      end
 
       def plan_params
         params.require(:plan).permit(:plan_id)

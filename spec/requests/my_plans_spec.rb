@@ -25,9 +25,14 @@ RSpec.describe 'MyPlans', type: :request do
       describe 'GET' do
         subject { get "/v1/my_plans/#{my_plan_id}", headers: options }
         it { is_expected.to eq 200 }
-        it_behaves_like 'Tokenがおかしい時', exist: true, different: true
+        it_behaves_like 'Tokenがおかしい時', exist: true
         context ':idが存在しない時' do
           let(:my_plan_id) { 0 }
+          it { is_expected.to eq 404 }
+        end
+        context ':idが違うユーザーの時' do
+          let(:different_user) { create(:user) }
+          let(:my_plan) { create(:my_plan, user_id: different_user.id) }
           it { is_expected.to eq 404 }
         end
       end
@@ -36,9 +41,14 @@ RSpec.describe 'MyPlans', type: :request do
         before { my_plan }
         it { is_expected.to eq 204 }
         it { expect { subject }.to change(MyPlan, :count).by(-1) }
-        it_behaves_like 'Tokenがおかしい時', exist: true, different: true
+        it_behaves_like 'Tokenがおかしい時', exist: true
         context ':idが存在しない時' do
           let(:my_plan_id) { 0 }
+          it { is_expected.to eq 404 }
+        end
+        context ':idが違うユーザーの時' do
+          let(:different_user) { create(:user) }
+          let(:my_plan) { create(:my_plan, user_id: different_user.id) }
           it { is_expected.to eq 404 }
         end
       end
