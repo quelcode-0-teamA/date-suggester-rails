@@ -29,13 +29,13 @@ FactoryBot.define do
     sequence(:email) { |n| "factory-#{n}@example.com" }
     password { 'password' }
     password_confirmation { 'password' }
-    birth_year { 1999 }
+    birth_year { 1990 }
     gender { 1 }
     area
   end
 
   factory :temp_user, class: User do
-    birth_year { 1999 }
+    birth_year { 1990 }
     area
   end
 
