@@ -75,4 +75,10 @@ RSpec.configure do |config|
       Bullet.end_request
     end
   end
+
+  # seed-fuを読み込む
+  config.before(:suite) do
+    SeedFu.fixture_paths = "#{::Rails.root}/db/fixtures/development"
+    SeedFu.seed
+  end
 end
