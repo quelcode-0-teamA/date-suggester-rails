@@ -2,10 +2,12 @@ module V1
   class UsersController < ApplicationController
     before_action :authorize!
 
+    # GET /v1/users/:id(.:format)
     def show
       render json: User.find(params[:id])
     end
 
+    # PUT /v1/users/:id(.:format)
     def update
       user = User.find(params[:id])
       if current_user?(user)
@@ -15,6 +17,7 @@ module V1
       end
     end
 
+    # DELETE /v1/users/:id(.:format)
     def destroy
       user = User.find(params[:id])
       if current_user?(user)

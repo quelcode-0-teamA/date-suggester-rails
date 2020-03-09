@@ -32,12 +32,6 @@ Style/IfUnlessModifier:
 Style/NumericLiterals:
   MinDigits: 7
 
-# AutoCorrect オフ specのみオン
-Style/BlockDelimiters:
-  AutoCorrect: false
-  Exclude:
-    - "spec/**/*"
-
 # 自動生成ファイル除外
 Style/BlockComments:
   Exclude:
