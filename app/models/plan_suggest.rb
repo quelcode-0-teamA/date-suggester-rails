@@ -19,7 +19,7 @@ class PlanSuggest
       def sort(budget_range, date_area, user_region)
         areas = Area.get_date_areas(user_region, date_area)
         Plan.where(total_budget: budget_range[0]...budget_range[1])
-            .where(area: areas)
+            .where(area: areas).preload(:area)
       end
 
       def re_sort(budget_range, date_area, user_region)
