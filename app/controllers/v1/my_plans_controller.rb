@@ -4,7 +4,7 @@ module V1
 
     # GET /v1/my_plans(.:format)
     def index
-      my_plans = @current_user.my_plans.recent.preload(plan: :area)
+      my_plans = @current_user.my_plans.eager_load(plan: :area).recent
       render json: my_plans, each_serializer: MyPlansSerializer
     end
 
