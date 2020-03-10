@@ -1,4 +1,4 @@
-class SuggestParam
+class PlanSuggestParam
   include ActiveModel::Model
   include ActiveModel::Attributes
 
