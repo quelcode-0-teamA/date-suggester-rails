@@ -32,12 +32,6 @@ Style/IfUnlessModifier:
 Style/NumericLiterals:
   MinDigits: 7
 
-# AutoCorrect オフ specのみオン
-Style/BlockDelimiters:
-  AutoCorrect: false
-  Exclude:
-    - "spec/**/*"
-
 # 自動生成ファイル除外
 Style/BlockComments:
   Exclude:
@@ -90,6 +84,7 @@ Metrics/BlockLength:
     - "spec/**/*"
     - "lib/tasks/auto_annotate_models.rake"
     - "Guardfile"
+    - "config/routes.rb"
 
 # メソッド名とインスタンス変数の名前一致させない(予約語被りで外した経緯)
 Naming/MemoizedInstanceVariableName:
