@@ -30,7 +30,7 @@ class UserType < ApplicationRecord
   }
 
   class << self
-    def calculation_budget_range(birth_year, date_budget)
+    def calc_budget_range(birth_year, date_budget)
       standard_budget = get_standard_budget(birth_year)
       to_budget_range(standard_budget, date_budget)
     end

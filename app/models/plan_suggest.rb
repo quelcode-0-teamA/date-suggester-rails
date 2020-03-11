@@ -2,7 +2,7 @@ class PlanSuggest
   class << self
     def suggest!(params)
       suggest_params = check_suggest_params(params)
-      budget_range = UserType.calculation_budget_range(suggest_params.birth_year, suggest_params.date_budget)
+      budget_range = UserType.calc_budget_range(suggest_params.birth_year, suggest_params.date_budget)
       user_region = Area.get_region_id(suggest_params.user_area)
       sort_plans = sort(budget_range, suggest_params.date_area, user_region)
       sort_plans = re_sort(budget_range, suggest_params.date_area, user_region) if sort_plans.blank?

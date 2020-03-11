@@ -29,11 +29,11 @@ class PlanSpot < ApplicationRecord
   validates :order, uniqueness: { scope: :plan },
                     numericality: { only_integer: true }
 
-  after_save :recalculation_total_budget
+  after_save :calc_total_budget
 
   scope :sum_budget_for_spots, -> { eager_load(:spot).inject(0) { |sum, plan| sum + plan.spot[:budget] } }
 
-  def recalculation_total_budget
+  def calc_total_budget
     plan.update(total_budget: plan.plan_spots.sum_budget_for_spots)
   end
 end
