@@ -72,7 +72,7 @@ Metrics/AbcSize:
 
 # 1メソッドの長さ
 Metrics/MethodLength:
-  Max: 16
+  Max: 20
 
 # Classの長さ
 Metrics/ClassLength:

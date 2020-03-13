@@ -1,43 +1,50 @@
 class PlanSuggest
   class << self
     def suggest!(params)
-      suggest_params = check_suggest_params(params)
-      budget_range = UserType.calculation_budget_range(suggest_params.birth_year, suggest_params.date_budget)
-      user_region = Area.get_region_id(suggest_params.user_area)
-      sort_plans = sort(budget_range, suggest_params.date_area, user_region)
-      sort_plans = re_sort(budget_range, suggest_params.date_area, user_region) if sort_plans.blank?
+      suggest_params = suggest_params(params)
+      sort_plans = sort(
+        suggest_params.low_budget,
+        suggest_params.high_budget,
+        suggest_params.date_area,
+        suggest_params.user_region
+      )
+      if sort_plans.blank?
+        sort_plans = re_sort(
+          suggest_params.low_budget,
+          suggest_params.high_budget,
+          suggest_params.date_area,
+          suggest_params.user_region
+        )
+      end
       sort_plans.sample.presence || raise(ActiveRecord::RecordNotFound, '検索結果が見つかりませんでした。')
     end
 
     private
 
-      def check_suggest_params(params)
+      def suggest_params(params)
         suggest_params = PlanSuggestParam.new(params)
         suggest_params if suggest_params.valid?
       end
 
-      def sort(budget_range, date_area, user_region)
+      def sort(low_budget, high_budget, date_area, user_region)
         areas = Area.get_date_areas(user_region, date_area)
-        Plan.where(total_budget: budget_range[0]...budget_range[1])
-            .where(area: areas)
+        Plan.where(total_budget: low_budget...high_budget)
+            .where(area: areas).preload(:area)
       end
 
-      def re_sort(budget_range, date_area, user_region)
-        count_num = 0
+      def re_sort(low_budget, high_budget, date_area, user_region)
         sort_plans = []
-        while sort_plans.blank?
-          break [] if count_num >= Area::REGION_MAX_ID
+        max = (Area::REGION_MAX_ID / 2.0).round
+        (1..max).each do |count_num|
+          increase_region = Area.increase_region_id(user_region, count_num)
+          sort_plans = sort(low_budget, high_budget, date_area, increase_region)
+          break if sort_plans.present?
 
-          count_num += 1
-          user_region = Area.increase_region_id(user_region, count_num)
-          sort_plans = sort(budget_range, date_area, user_region)
-          return sort_plans if sort_plans.present?
-
-          count_num += 1
-          user_region = Area.reduce_region_id(user_region, count_num)
-          sort_plans = sort(budget_range, date_area, user_region)
-          return sort_plans if sort_plans.present?
+          reduce_region = Area.reduce_region_id(user_region, count_num)
+          sort_plans = sort(low_budget, high_budget, date_area, reduce_region)
+          break if sort_plans.present?
         end
+        sort_plans
       end
   end
 end

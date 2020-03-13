@@ -26,7 +26,7 @@ class Area < ApplicationRecord
   validates :name, presence: true
   validates :order, numericality: { only_integer: true }
 
-  scope :with_active, -> { where('"order" > ?', 0) }
+  scope :with_active, -> { where.not(order: 0) }
   scope :get_region_id, ->(area_id) { find(area_id).region_before_type_cast }
   scope :sort_region, ->(user_region) { where(region: user_region) }
   scope :sort_other_regions, lambda { |user_region|
