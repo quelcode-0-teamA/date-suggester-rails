@@ -5,19 +5,24 @@ workflows:
   heroku_deploy:
     jobs:
       - generate_cache
-      - build:
+      - test:
+          requires:
+            - generate_cache
+      - lint:
           requires:
             - generate_cache
       - deploy-dev:
           requires:
-            - build
+            - test
+            - lint
           filters:
             branches:
               only:
                 - develop
       - deploy-pro:
           requires:
-            - build
+            - test
+            - lint
           filters:
             branches:
               only:
@@ -44,7 +49,7 @@ jobs:
       - save_cache:
           key: docker-{{ checksum "docker-compose.yml" }}-{{ checksum "Gemfile.lock" }}-{{ checksum "Dockerfile" }}
           paths: ~/caches/images.tar
-  build:
+  test:
     machine:
       image: circleci/classic:edge
     steps:
@@ -70,29 +75,33 @@ jobs:
                         --out /tmp/test_results/rspec.xml \
                         --format progress \
                         $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
-      - run:
-          name: docker-compose down
-          command: docker-compose down
-
-      # - run:
-      #     name: Database setup
-      #     command: bundle exec rails db:schema:load
-
       # collect reports
-      # - store_test_results:
-      #     path: /tmp/test-results
-      # - store_artifacts:
-      #     path: /tmp/test-results
-      #     destination: test-results
-
-      # - run:
-      #     name: Install reviewdog
-      #     command: |
-      #       curl -fSL https://github.com/haya14busa/reviewdog/releases/download/$REVIEWDOG_VERSION/reviewdog_linux_amd64 -o reviewdog && chmod +x ./reviewdog
-
-      # - run:
-      #     name: Run rubocop & reviewdog
-      #     command: bundle exec rubocop | ./reviewdog -f=rubocop -reporter=github-pr-review
+      - store_test_results:
+          path: /tmp/test-results
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: test-results
+  lint:
+    machine:
+      image: circleci/classic:edge
+    steps:
+      - checkout
+      - restore_cache:
+          key: docker-{{ checksum "docker-compose.yml" }}-{{ checksum "Gemfile.lock" }}-{{ checksum "Dockerfile" }}
+          paths: ~/caches/images.tar
+      - run:
+          name: Docker load
+          command: |
+            if [[ -e ~/caches/images.tar ]]; then
+              docker load -i ~/caches/images.tar
+            fi
+      - run:
+          name: Install reviewdog
+          command: |
+            curl -fSL https://github.com/haya14busa/reviewdog/releases/download/$REVIEWDOG_VERSION/reviewdog_linux_amd64 -o reviewdog && chmod +x ./reviewdog
+      - run:
+          name: Run rubocop & reviewdog
+          command: docker-compose run web bundle exec rubocop | ./reviewdog -f=rubocop -reporter=github-pr-review
 
   deploy-dev:
     working_directory: /tmp/repo-dev
