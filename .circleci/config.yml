@@ -5,24 +5,19 @@ workflows:
   heroku_deploy:
     jobs:
       - generate_cache
-      - test:
-          requires:
-            - generate_cache
-      - lint:
+      - run_test_lint:
           requires:
             - generate_cache
       - deploy-dev:
           requires:
-            - test
-            - lint
+            - run_test_lint
           filters:
             branches:
               only:
                 - develop
       - deploy-pro:
           requires:
-            - test
-            - lint
+            - run_test_lint
           filters:
             branches:
               only:
@@ -49,7 +44,7 @@ jobs:
       - save_cache:
           key: docker-{{ checksum "docker-compose.yml" }}-{{ checksum "Gemfile.lock" }}-{{ checksum "Dockerfile" }}
           paths: ~/caches/images.tar
-  test:
+  run_test_lint:
     machine:
       image: circleci/classic:edge
     steps:
@@ -81,27 +76,13 @@ jobs:
       - store_artifacts:
           path: /tmp/test-results
           destination: test-results
-  lint:
-    machine:
-      image: circleci/classic:edge
-    steps:
-      - checkout
-      - restore_cache:
-          key: docker-{{ checksum "docker-compose.yml" }}-{{ checksum "Gemfile.lock" }}-{{ checksum "Dockerfile" }}
-          paths: ~/caches/images.tar
-      - run:
-          name: Docker load
-          command: |
-            if [[ -e ~/caches/images.tar ]]; then
-              docker load -i ~/caches/images.tar
-            fi
       - run:
           name: Install reviewdog
           command: |
-            curl -fSL https://github.com/haya14busa/reviewdog/releases/download/$REVIEWDOG_VERSION/reviewdog_linux_amd64 -o reviewdog && chmod +x ./reviewdog
+            curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh| sh -s -- -b ./bin
       - run:
           name: Run rubocop & reviewdog
-          command: docker-compose run web bundle exec rubocop | ./reviewdog -f=rubocop -reporter=github-pr-review
+          command: docker-compose run web bundle exec rubocop | ./bin/reviewdog -f=rubocop -reporter=github-pr-review
 
   deploy-dev:
     working_directory: /tmp/repo-dev
