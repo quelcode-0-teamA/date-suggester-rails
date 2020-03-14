@@ -3,7 +3,7 @@ FROM ruby:2.6.5-alpine3.11
 ENV APP_ROOT=/date_suggester \
     RUNTIME_PACKAGES="linux-headers tzdata postgresql-dev postgresql" \
     DEV_PACKAGES="build-base libxml2-dev libc-dev curl-dev make gcc g++" \
-    LANG=ja_JP.UTF-8 \
+    LANG=en_US.UTF-8 \
     BUNDLE_JOBS=4 \
     BUNDLE_RETRY=3
 
