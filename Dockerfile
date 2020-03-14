@@ -19,11 +19,12 @@ RUN apk update && \
     rm -rf /usr/local/bundle/cache/* /usr/local/share/.cache/* /var/cache/* /tmp/* && \
     apk del build-dependencies
 
-COPY . /
+COPY . /$APP_ROOT
 
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 3000
 
-CMD ["rails", "server", "-b", "0.0.0.0"]
+RUN chmod +x $APP_ROOT/bin/start.sh
+CMD ["bin/start.sh"]
