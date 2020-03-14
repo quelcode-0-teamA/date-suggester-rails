@@ -16,6 +16,7 @@ test:
 
 production:
   <<: *default
-  database: date-suggester-rails_production
-  username: date-suggester-rails
-  password: <%= ENV['DATE-SUGGESTER-RAILS_DATABASE_PASSWORD'] %>
+  database: <%= ENV['RDS_DB_NAME'] %>
+  username: <%= ENV['RDS_USERNAME'] %>
+  password: <%= ENV['RDS_PASSWORD'] %>
+  host: <%= ENV['RDS_HOSTNAME'] %>
