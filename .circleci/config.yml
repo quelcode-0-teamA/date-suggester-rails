@@ -4,7 +4,10 @@ orbs:
 workflows:
   heroku_deploy:
     jobs:
-      - build
+      - generate_cache
+      - build:
+          requires:
+            - generate_cache
       - deploy-dev:
           requires:
             - build
@@ -21,43 +24,40 @@ workflows:
                 - master
 
 jobs:
-  build:
+  generate_cache:
     machine:
       image: circleci/classic:edge
     steps:
       - checkout
-
       - restore_cache:
-          name: restore rails image cache
           key: docker-{{ checksum "docker-compose.yml" }}-{{ checksum "Gemfile.lock" }}-{{ checksum "Dockerfile" }}
           paths: ~/caches/images.tar
-
       - run:
-          name: build docker-compose images
+          name: Setup docker
           command: |
             if [ ! -f ~/caches/images.tar ]; then
               docker-compose pull db
               docker-compose build
               mkdir -p ~/caches
               docker save $(docker images | awk 'NR>=2 && ! /^<none>/{print $1}') -o ~/caches/images.tar
-            else
-              docker load -i ~/caches/images.tar
             fi
-
       - save_cache:
-          name: save rails image cache
           key: docker-{{ checksum "docker-compose.yml" }}-{{ checksum "Gemfile.lock" }}-{{ checksum "Dockerfile" }}
           paths: ~/caches/images.tar
-
-      # - run:
-      #     name: docker-compose build db
-      #     command: docker-compose build db
-      # - run:
-      #     name: docker-compose up
-      #     command: docker-compose up -d
-      # - run:
-      #     name: sleep for waiting launch db
-      #     command: sleep 1
+  build:
+    machine:
+      image: circleci/classic:edge
+    steps:
+      - checkout
+      - restore_cache:
+          key: docker-{{ checksum "docker-compose.yml" }}-{{ checksum "Gemfile.lock" }}-{{ checksum "Dockerfile" }}
+          paths: ~/caches/images.tar
+      - run:
+          name: Docker load
+          command: |
+            if [[ -e ~/caches/images.tar ]]; then
+              docker load -i ~/caches/images.tar
+            fi
       - run:
           name: Database setup
           command: docker-compose run web rails db:create db:migrate RAILS_ENV=test
@@ -73,9 +73,6 @@ jobs:
       - run:
           name: docker-compose down
           command: docker-compose down
-  # build:
-  #   working_directory: ~/repo
-  #         RAILS_ENV: test
 
       # - run:
       #     name: Database setup
