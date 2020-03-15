@@ -4,27 +4,24 @@ orbs:
 workflows:
   heroku_deploy:
     jobs:
-      - generate_cache
-      - run_test_lint:
-          requires:
-            - generate_cache
+      - build
       - deploy-dev:
           requires:
-            - run_test_lint
+            - build
           filters:
             branches:
               only:
                 - develop
       - deploy-pro:
           requires:
-            - run_test_lint
+            - build
           filters:
             branches:
               only:
                 - master
 
 jobs:
-  generate_cache:
+  build:
     machine:
       image: circleci/classic:edge
     steps:
@@ -33,31 +30,19 @@ jobs:
           key: docker-{{ checksum "docker-compose.yml" }}-{{ checksum "Gemfile.lock" }}-{{ checksum "Dockerfile" }}
           paths: ~/caches/images.tar
       - run:
-          name: Setup docker
+          name: Setup docker-compose
           command: |
             if [ ! -f ~/caches/images.tar ]; then
               docker-compose pull db
               docker-compose build
               mkdir -p ~/caches
               docker save $(docker images | awk 'NR>=2 && ! /^<none>/{print $1}') -o ~/caches/images.tar
+            else
+              docker load -i ~/caches/images.tar
             fi
       - save_cache:
           key: docker-{{ checksum "docker-compose.yml" }}-{{ checksum "Gemfile.lock" }}-{{ checksum "Dockerfile" }}
           paths: ~/caches/images.tar
-  run_test_lint:
-    machine:
-      image: circleci/classic:edge
-    steps:
-      - checkout
-      - restore_cache:
-          key: docker-{{ checksum "docker-compose.yml" }}-{{ checksum "Gemfile.lock" }}-{{ checksum "Dockerfile" }}
-          paths: ~/caches/images.tar
-      - run:
-          name: Docker load
-          command: |
-            if [[ -e ~/caches/images.tar ]]; then
-              docker load -i ~/caches/images.tar
-            fi
       - run:
           name: Database setup
           command: docker-compose run web rails db:create db:migrate RAILS_ENV=test
@@ -77,12 +62,10 @@ jobs:
           path: /tmp/test-results
           destination: test-results
       - run:
-          name: Install reviewdog
+          name: Run rubocop & reviewdog
           command: |
             curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh| sh -s -- -b ./bin
-      - run:
-          name: Run rubocop & reviewdog
-          command: docker-compose run web bundle exec rubocop | ./bin/reviewdog -f=rubocop -reporter=github-pr-review
+            docker-compose run web bundle exec rubocop | ./bin/reviewdog -f=rubocop -reporter=github-pr-review
 
   deploy-dev:
     working_directory: /tmp/repo-dev

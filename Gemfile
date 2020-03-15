@@ -13,6 +13,7 @@ gem 'active_model_serializers', '~> 0.10.10'
 gem 'rack-cors', '~> 1.1', '>= 1.1.1'
 gem 'kaminari', '~> 1.2'
 gem 'seed-fu', '~> 2.3', '>= 2.3.9'
+gem 'tzinfo-data', '~> 1.2019', '>= 1.2019.3'
 
 group :development, :test do
   gem 'rubocop', '~> 0.80.1'
@@ -36,5 +37,3 @@ group :test do
   gem 'guard', '~> 2.16', '>= 2.16.1'
   gem 'guard-rspec', '~> 4.7', '>= 4.7.3'
 end
-
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
