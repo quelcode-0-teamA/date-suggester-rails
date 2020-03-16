@@ -1,0 +1,9 @@
+.bundle
+.vscode
+.circleci
+.env
+log
+tmp
+request.http
+vendor/assets
+vendor/bundle

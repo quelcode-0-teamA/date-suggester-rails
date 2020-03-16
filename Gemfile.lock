@@ -233,6 +233,8 @@ GEM
     thread_safe (0.3.6)
     tzinfo (1.2.6)
       thread_safe (~> 0.1)
+    tzinfo-data (1.2019.3)
+      tzinfo (>= 1.0.0)
     unicode-display_width (1.6.1)
     uniform_notifier (1.13.0)
     websocket-driver (0.7.1)
@@ -266,7 +268,7 @@ DEPENDENCIES
   seed-fu (~> 2.3, >= 2.3.9)
   spring (~> 2.1)
   spring-watcher-listen (~> 2.0, >= 2.0.1)
-  tzinfo-data
+  tzinfo-data (~> 1.2019, >= 1.2019.3)
 
 RUBY VERSION
    ruby 2.6.5p114

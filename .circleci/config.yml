@@ -22,73 +22,50 @@ workflows:
 
 jobs:
   build:
-    working_directory: ~/repo
-    docker:
-      # Language: Ruby
-      - image: circleci/ruby:2.6.5-node
-        environment:
-          BUNDLE_JOBS: 3
-          BUNDLE_RETRY: 3
-          BUNDLE_PATH: vendor/bundle
-          RAILS_ENV: test
-          PGHOST: 127.0.0.1
-          PGUSER: postgres
-          REVIEWDOG_VERSION: 0.9.11
-      # DB: PostgreSQL
-      - image: circleci/postgres:11.6-alpine
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_DB: date-suggester-rails_test
+    machine:
+      image: circleci/classic:edge
     steps:
       - checkout
-      # Download and cache dependencies
-      - run:
-          name: Install bundler
-          command: gem install bundler:2.1.4
-
       - restore_cache:
-          keys:
-            - date-suggester-rails-{{ checksum "Gemfile.lock" }}
-            - date-suggester-rails-
-
+          key: docker-{{ checksum "docker-compose.yml" }}-{{ checksum "Gemfile.lock" }}-{{ checksum "Dockerfile" }}
+          paths: ~/caches/images.tar
       - run:
-          name: Bundle Install
-          command: bundle check || bundle install --deployment
-
+          name: Setup docker-compose
+          command: |
+            if [ ! -f ~/caches/images.tar ]; then
+              docker-compose pull db
+              docker-compose build
+              mkdir -p ~/caches
+              docker save $(docker images | awk 'NR>=2 && ! /^<none>/{print $1}') -o ~/caches/images.tar
+            else
+              docker load -i ~/caches/images.tar
+            fi
       - save_cache:
-          key: date-suggester-rails-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
-
+          key: docker-{{ checksum "docker-compose.yml" }}-{{ checksum "Gemfile.lock" }}-{{ checksum "Dockerfile" }}
+          paths: ~/caches/images.tar
       - run:
           name: Database setup
-          command: bundle exec rails db:schema:load
-
+          command: docker-compose run web rails db:create db:migrate RAILS_ENV=test
       - run:
           name: Run rspec in parallel
           command: |
             mkdir /tmp/test-results
-            bundle exec rspec --profile 10 \
+            docker-compose run web bundle exec rspec --profile 10 \
                         --format RspecJunitFormatter \
                         --out /tmp/test_results/rspec.xml \
                         --format progress \
                         $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
-
       # collect reports
       - store_test_results:
           path: /tmp/test-results
       - store_artifacts:
           path: /tmp/test-results
           destination: test-results
-
-      - run:
-          name: Install reviewdog
-          command: |
-            curl -fSL https://github.com/haya14busa/reviewdog/releases/download/$REVIEWDOG_VERSION/reviewdog_linux_amd64 -o reviewdog && chmod +x ./reviewdog
-
       - run:
           name: Run rubocop & reviewdog
-          command: bundle exec rubocop | ./reviewdog -f=rubocop -reporter=github-pr-review
+          command: |
+            curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh| sh -s -- -b ./bin
+            docker-compose run web bundle exec rubocop | ./bin/reviewdog -f=rubocop -reporter=github-pr-review
 
   deploy-dev:
     working_directory: /tmp/repo-dev

@@ -23,7 +23,18 @@
 request.http
 
 # vscode config
-/.vscode/*
+.vscode
 
 #env file
 .env
+# Elastic Beanstalk Files
+.ebextensions/*
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+# Vagrant
+.vagrant
+Vagrantfile
+mutagen.yml
+mutagen.yml.lock
+ubuntu-xenial-16.04-cloudimg-console.log
