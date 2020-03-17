@@ -62,10 +62,9 @@ jobs:
           path: /tmp/test-results
           destination: test-results
       - run:
-          name: Run rubocop & reviewdog
-          command: |
-            curl -sfL https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh| sh -s -- -b ./bin
-            docker-compose run web bundle exec rubocop | ./bin/reviewdog -f=rubocop -reporter=github-pr-review
+          name: Run rubocop
+          when: always
+          command: docker-compose run web bundle exec rubocop
 
   deploy-dev:
     working_directory: /tmp/repo-dev
