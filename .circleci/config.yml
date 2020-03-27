@@ -33,7 +33,6 @@ jobs:
           name: Setup docker-compose
           command: |
             if [ ! -f ~/caches/images.tar ]; then
-              docker-compose pull db
               docker-compose build
               mkdir -p ~/caches
               docker save $(docker images | awk 'NR>=2 && ! /^<none>/{print $1}') -o ~/caches/images.tar

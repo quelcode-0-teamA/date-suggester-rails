@@ -26,5 +26,4 @@ RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 3000
 
-RUN chmod +x $APP_ROOT/bin/start.sh
-CMD ["bin/start.sh"]
+CMD ["rails", "server", "-b", "0.0.0.0"]
