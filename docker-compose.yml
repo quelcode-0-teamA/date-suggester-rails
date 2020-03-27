@@ -6,7 +6,6 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: 'root'
       TZ: Asia/Tokyo
   web:
     build: .
