@@ -1,7 +1,7 @@
 FROM ruby:2.6.5-alpine3.11
 
 ENV APP_ROOT=/date_suggester \
-    RUNTIME_PACKAGES="linux-headers tzdata postgresql-dev postgresql" \
+    RUNTIME_PACKAGES="linux-headers tzdata less postgresql-dev postgresql" \
     DEV_PACKAGES="build-base libxml2-dev libc-dev curl-dev make gcc g++" \
     LANG=en_US.UTF-8 \
     BUNDLE_JOBS=4 \
@@ -26,5 +26,4 @@ RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 3000
 
-RUN chmod +x $APP_ROOT/bin/start.sh
-CMD ["bin/start.sh"]
+CMD ["rails", "server", "-b", "0.0.0.0"]

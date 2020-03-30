@@ -1,27 +1,28 @@
 version: 2.1
 orbs:
   heroku: circleci/heroku@1.0.1
+  aws-ecr: circleci/aws-ecr@6.7.1
 workflows:
   heroku_deploy:
     jobs:
-      - build
+      - build_and_test
       - deploy-dev:
           requires:
-            - build
+            - build_and_test
           filters:
             branches:
               only:
                 - develop
-      - deploy-pro:
+      - deploy-sta:
           requires:
-            - build
+            - build_and_test
           filters:
             branches:
               only:
-                - master
+                - stage
 
 jobs:
-  build:
+  build_and_test:
     machine:
       image: circleci/classic:edge
     steps:
@@ -33,7 +34,6 @@ jobs:
           name: Setup docker-compose
           command: |
             if [ ! -f ~/caches/images.tar ]; then
-              docker-compose pull db
               docker-compose build
               mkdir -p ~/caches
               docker save $(docker images | awk 'NR>=2 && ! /^<none>/{print $1}') -o ~/caches/images.tar
@@ -92,22 +92,39 @@ jobs:
           name: Mentenance mode OFF
           command: heroku maintenance:off --app $HEROKU_DEV_APP_NAME
 
-  deploy-pro:
-    working_directory: /tmp/repo-pro
-    docker:
-      - image: buildpack-deps:bionic
-    executor: heroku/default
+  deploy-sta:
+    working_directory: /tmp/deploy-sta
+    executor: aws-ecr/default
     steps:
-      - checkout
-      - heroku/install
+      - aws-ecr/build-and-push-image:
+          tag: "${CIRCLE_SHA1}"
+          repo: "${AWS_ECR_REPO}"
       - run:
-          name: Mentenance mode ON
-          command: heroku maintenance:on --app $HEROKU_DEV_APP_NAME
-      - heroku/deploy-via-git:
-          app-name: $HEROKU_PRO_APP_NAME
+          name: Create Dockerrun.aws.json
+          command: |
+            cat \<<EOF > Dockerrun.aws.json
+            {
+              "AWSEBDockerrunVersion": "1",
+              "Image": {
+                "Name": "${AWS_ECR_ACCOUNT_URL}/${AWS_ECR_REPO}:${CIRCLE_SHA1}"
+              },
+              "Ports": [{ "ContainerPort": "3000" }]
+            }
+            EOF
       - run:
-          name: Command run rails db:migrate
-          command: heroku run bundle exec rails db:migrate --app $HEROKU_PRO_APP_NAME
+          name: Zip Dockerrun.aws.json
+          command: zip "${CIRCLE_SHA1}.zip" Dockerrun.aws.json
       - run:
-          name: Mentenance mode OFF
-          command: heroku maintenance:off --app $HEROKU_DEV_APP_NAME
+          name: Upload zip to S3
+          command: aws s3 cp "${CIRCLE_SHA1}.zip" "s3://${AWS_S3_BUCKER_NAME}/bundles/${CIRCLE_SHA1}.zip"
+      - run:
+          name: Create application versions
+          command: |
+            aws elasticbeanstalk create-application-version \
+            --application-name ${AWS_EB_APP_NAME} --version-label ${CIRCLE_SHA1} \
+            --source-bundle S3Bucket="${AWS_S3_BUCKER_NAME}",S3Key="bundles/${CIRCLE_SHA1}.zip"
+      - run:
+          name: Update environment
+          command: |
+            aws elasticbeanstalk update-environment \
+            --environment-id ${AWS_EB_ENVIRONMENT_ID} --version-label ${CIRCLE_SHA1}

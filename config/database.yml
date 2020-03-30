@@ -2,21 +2,19 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: postgres
-  password: <%= ENV.fetch("POSTGRES_PASSWORD") { 'root' } %>
-  host: db
+  host: <%= ENV.fetch("RDS_HOSTNAME") { "db" } %>
+  username: <%= ENV.fetch("RDS_USERNAME") { "postgres" } %>
+  password: <%= ENV.fetch("RDS_PASSWORD") { "root" } %>
+  port: <%= ENV.fetch("RDS_PORT") { "5432" } %>
 
 development:
   <<: *default
-  database: date-suggester-rails_development
+  database: <%= ENV['DEV_DB_NAME'] { "date-suggester-rails_development" } %>
 
 test:
   <<: *default
-  database: date-suggester-rails_test
+  database: <%= ENV['TEST_DB_NAME'] { "date-suggester-rails_test" } %>
 
 production:
   <<: *default
   database: <%= ENV['RDS_DB_NAME'] %>
-  username: <%= ENV['RDS_USERNAME'] %>
-  password: <%= ENV['RDS_PASSWORD'] %>
-  host: <%= ENV['RDS_HOSTNAME'] %>
