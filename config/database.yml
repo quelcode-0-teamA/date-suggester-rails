@@ -9,11 +9,11 @@ default: &default
 
 development:
   <<: *default
-  database: <%= ENV['DEV_DB_NAME'] { "date-suggester-rails_development" } %>
+  database: date-suggester-rails_development
 
 test:
   <<: *default
-  database: <%= ENV['TEST_DB_NAME'] { "date-suggester-rails_test" } %>
+  database: date-suggester-rails_test
 
 production:
   <<: *default

@@ -3,7 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.5'
 
-gem 'rails', '~> 5.2.4', '>= 5.2.4.1'
+gem 'rails', '~> 6.0', '>= 6.0.2.2'
 gem 'pg', '~> 1.2', '>= 1.2.2'
 gem 'puma', '~> 4.3', '>= 4.3.3'
 gem 'bootsnap', '~> 1.4', '>= 1.4.5'
@@ -31,7 +31,7 @@ group :development do
 end
 
 group :test do
-  gem 'rspec-rails', '~> 3.9'
+  gem 'rspec-rails', '~> 4.0'
   gem 'rspec_junit_formatter', '~> 0.4.1'
   gem 'factory_bot_rails', '~> 5.1', '>= 5.1.1'
   gem 'guard', '~> 2.16', '>= 2.16.1'
