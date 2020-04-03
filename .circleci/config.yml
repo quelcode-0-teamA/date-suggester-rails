@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   aws-ecr: circleci/aws-ecr@6.7.1
 workflows:
-  heroku_deploy:
+  build_test_deploy:
     jobs:
       - build_and_test
       - deploy-dev:
@@ -12,13 +12,6 @@ workflows:
             branches:
               only:
                 - develop
-      - deploy-sta:
-          requires:
-            - build_and_test
-          filters:
-            branches:
-              only:
-                - stage
 
 jobs:
   build_and_test:
@@ -54,7 +47,6 @@ jobs:
                         --out /tmp/test_results/rspec.xml \
                         --format progress \
                         $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
-      # collect reports
       - store_test_results:
           path: /tmp/test-results
       - store_artifacts:
