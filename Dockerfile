@@ -11,7 +11,7 @@ WORKDIR $APP_ROOT
 COPY Gemfile Gemfile.lock $APP_ROOT/
 
 RUN apk update && \
-    apk add --update --no-cache  $RUNTIME_PACKAGES && \
+    apk add --update --no-cache $RUNTIME_PACKAGES && \
     apk add --update --virtual build-dependencies --no-cache $DEV_PACKAGES && \
     gem install --no-document bundler:2.1.4 && \
     bundle install && \

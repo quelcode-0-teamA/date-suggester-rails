@@ -7,15 +7,19 @@
 ※Railsを動かす環境がない方は[こちら](https://railsguides.jp/getting_started.html#rails%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB)をご参照ください。
 
 
-Gemの導入とDBのクリエイトとマイグレーションを行います。
+Docker環境を立ち上げ、DBの用意を行います。
 
 ```
-$ bundle install
-$ rails db:create
-$ rails db:migrate
-$ rails db:seed_fu
-$ bundle exec rails s
+$ dokcer-compose build
+$ dokcer-compose up
+$ docker-compose run web rails db:create
+$ docker-compose run web rails db:migrate
+$ docker-compose run web rails db:seed_fu
 ```
+
+locahostのポート3000にてご確認ください。
+
+`http://localhost:3000/`
 
 # Usage
 
