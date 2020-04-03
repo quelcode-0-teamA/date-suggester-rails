@@ -1,6 +1,5 @@
 version: 2.1
 orbs:
-  heroku: circleci/heroku@1.0.1
   aws-ecr: circleci/aws-ecr@6.7.1
 workflows:
   heroku_deploy:
@@ -67,33 +66,7 @@ jobs:
           command: docker-compose run web bundle exec rubocop
 
   deploy-dev:
-    working_directory: /tmp/repo-dev
-    docker:
-      - image: buildpack-deps:bionic
-    executor: heroku/default
-    steps:
-      - checkout
-      - heroku/install
-      - run:
-          name: Mentenance mode ON
-          command: heroku maintenance:on --app $HEROKU_DEV_APP_NAME
-      - heroku/deploy-via-git:
-          app-name: $HEROKU_DEV_APP_NAME
-      - run:
-          name: Command run rails db:migrate
-          command: heroku run bundle exec rails db:migrate --app $HEROKU_DEV_APP_NAME
-      - run:
-          name: Command run rails db:seed_fu
-          command: |
-            heroku run bundle exec rails db:seed_fu \
-            FIXTURE_PATH=./db/fixtures/development \
-            --app $HEROKU_DEV_APP_NAME
-      - run:
-          name: Mentenance mode OFF
-          command: heroku maintenance:off --app $HEROKU_DEV_APP_NAME
-
-  deploy-sta:
-    working_directory: /tmp/deploy-sta
+    working_directory: /tmp/deploy-dev
     executor: aws-ecr/default
     steps:
       - aws-ecr/build-and-push-image:
