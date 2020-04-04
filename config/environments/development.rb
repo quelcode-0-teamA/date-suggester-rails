@@ -44,6 +44,8 @@ Rails.application.configure do
 
   # ファイルをローカルに保存する
   config.active_storage.service = :local
+  Rails.application.routes.default_url_options[:host] = 'localhost'
+  Rails.application.routes.default_url_options[:port] = 3000
 
   # Bullet setting
   config.after_initialize do
