@@ -45,6 +45,8 @@ class User < ApplicationRecord
                     uniqueness: { case_sensitive: false },
                     format: { with: VALID_EMAIL_REGEX }
   validates :birth_year, numericality: { in: 1900..Time.zone.today.year }
+  validates :avatar, content_type: %i[png jpg jpeg],
+                     size: { less_than: 2.megabytes }
 
   before_save { self.email = email&.downcase }
 

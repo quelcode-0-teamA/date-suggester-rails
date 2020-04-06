@@ -15,8 +15,11 @@ gem 'kaminari', '~> 1.2'
 gem 'seed-fu', '~> 2.3', '>= 2.3.9'
 gem 'tzinfo-data', '~> 1.2019', '>= 1.2019.3'
 
-# Image processing for ActiveStorage
+# ActiveStorage
 gem 'image_processing', '~> 1.10', '>= 1.10.3'
+
+# upload files validation
+gem 'active_storage_validations', '~> 0.8.8'
 
 # AWS S3
 gem 'aws-sdk-s3', '~> 1.61', '>= 1.61.1', require: false
