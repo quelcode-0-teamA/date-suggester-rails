@@ -19,6 +19,10 @@ vendor/assets
 vendor/bundle
 node_modules
 
+# Ignore uploaded files in development.
+/storage/*
+!/storage/.keep
+
 # My files
 .vscode
 .circleci

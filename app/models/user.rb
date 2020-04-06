@@ -24,9 +24,12 @@
 #  fk_rails_...  (area_id => areas.id)
 #
 class User < ApplicationRecord
+  include Rails.application.routes.url_helpers
+
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.freeze
 
   has_secure_token
+  has_one_attached :avatar
   has_many :my_plans, dependent: :destroy
   belongs_to :area
 
@@ -42,6 +45,12 @@ class User < ApplicationRecord
                     uniqueness: { case_sensitive: false },
                     format: { with: VALID_EMAIL_REGEX }
   validates :birth_year, numericality: { in: 1900..Time.zone.today.year }
+  validates :avatar, content_type: %i[png jpg jpeg],
+                     size: { less_than: 2.megabytes }
 
   before_save { self.email = email&.downcase }
+
+  def avatar_url
+    avatar.attached? ? url_for(avatar) : nil
+  end
 end

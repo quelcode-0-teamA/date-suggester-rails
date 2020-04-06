@@ -16,5 +16,9 @@ services:
       - "3000:3000"
     depends_on:
       - db
+    environment:
+      S3_BUCKET_NAME: test_bucket
+    tty: true
+    stdin_open: true
 volumes:
   db:
