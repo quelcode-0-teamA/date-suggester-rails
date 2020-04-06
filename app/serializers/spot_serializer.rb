@@ -18,7 +18,6 @@ class SpotSerializer < ActiveModel::Serializer
               :description,
               :budget,
               :thumb,
-              :tel,
               :url
 
   def budget
