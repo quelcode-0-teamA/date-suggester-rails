@@ -2,7 +2,8 @@ class SpotSimpleSerializer < ActiveModel::Serializer
   attributes  :id,
               :name,
               :budget,
-              :thumb
+              :thumb,
+              :url
 
   def budget
     "#{object.budget.to_s(:delimited, delimiter: ',')}円"
