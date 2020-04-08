@@ -1,6 +1,7 @@
 class PlanSimpleSerializer < ActiveModel::Serializer
   attributes  :id,
               :title,
+              :description,
               :area,
               :total_budget,
               :thumb
