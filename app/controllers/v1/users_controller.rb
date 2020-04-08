@@ -11,9 +11,6 @@ module V1
     def update
       user = User.find(params[:id])
       if current_user?(user)
-        if avatar_params[:avatar]
-          user.avatar.attach(avatar_params[:avatar])
-        end
         render json: user if user.update!(user_params)
       else
         render_403
@@ -41,10 +38,6 @@ module V1
           :name, :email, :birth_year,
           :gender, :area_id
         )
-      end
-
-      def avatar_params
-        params.require(:user).permit(:avatar)
       end
   end
 end

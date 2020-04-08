@@ -28,7 +28,8 @@ Rails.application.routes.draw do
       resources :sign_up, only: %i[create]
     end
     resources :sign_in, only: %i[create]
-    resources :users, only: %i[show update destroy]
+    resources :users, only: %i[show update destroy] do
+    end
     resources :areas, only: %i[index]
     resources :spots, only: %i[show]
     resources :plans, only: %i[show] do
