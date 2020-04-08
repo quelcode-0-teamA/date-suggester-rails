@@ -8,6 +8,8 @@ require "active_record/railtie"
 # require "active_storage/engine"
 require "action_controller/railtie"
 # require "action_mailer/railtie"
+# require "action_mailbox/engine"
+# require "action_text/engine"
 require "action_view/railtie"
 # require "action_cable/engine"
 # require "sprockets/railtie"
@@ -20,7 +22,10 @@ Bundler.require(*Rails.groups)
 module DateSuggesterRails
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.2
+    config.load_defaults 6.0
+    config.time_zone = 'Tokyo'
+    config.active_record.default_timezone = :local
+    config.i18n.default_locale = :ja
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
@@ -31,5 +36,21 @@ module DateSuggesterRails
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # RspecのControllerファイルを作成しない
+    config.generators do |g|
+      g.test_framework :rspec,
+                        controller_specs: false
+    end
+
+    # rack-cors設定
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins "*"
+        resource "*",
+          headers: :any,
+          methods: [:get, :post, :put, :delete, :options, :head]
+      end
+    end
   end
 end

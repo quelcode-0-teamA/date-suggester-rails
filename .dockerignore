@@ -1,0 +1,33 @@
+# OS X
+.DS_Store
+
+# Environment normalisation
+.git
+.gitignore
+README.md
+
+# Docker
+.dockerignore
+
+# Rails
+.env
+log
+tmp
+.bundle
+.ruby-version
+vendor/assets
+vendor/bundle
+node_modules
+
+# My files
+.vscode
+.circleci
+Procfile
+request.http
+
+# Vagrant
+.vagrant
+Vagrantfile
+mutagen.yml
+mutagen.yml.lock
+ubuntu-xenial-16.04-cloudimg-console.log

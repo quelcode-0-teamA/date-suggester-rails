@@ -1,0 +1,17 @@
+id,area,order,region
+1,品川,10,tokyo_station_region
+2,東京駅,8,tokyo_station_region
+3,秋葉原,9,tokyo_station_region
+4,上野,7,ueno_region
+5,西日暮里,12,ueno_region
+6,池袋,6,ikebukuro_region
+7,新大久保,0,shinjuku_region
+8,新宿,3,shinjuku_region
+9,原宿,4,shibuya_region
+10,渋谷,2,shibuya_region
+11,恵比寿,5,ebisu_region
+12,目黒,11,ebisu_region
+13,代官山,1,ebisu_region
+14,中目黒,0,ebisu_region
+15,自由が丘,0,unknown
+16,横浜,0,unknown
