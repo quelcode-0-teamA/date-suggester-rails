@@ -2,7 +2,7 @@ id,name,description,budget,thumb,url,order,plan_id
 1,GREEN BROTHERS 恵比寿店,ヘルシーなサラダボウルをオシャレなお店で♪,1500,https://date-suggester.s3-ap-northeast-1.amazonaws.com/spot/77022794_1035980020127705_6151880412902711035_n.jpg,https://tabelog.com/tokyo/A1303/A130302/13198136/,1,1
 2,アクイーユ,パティシエが作るパンケーキと本格カフェごはんのお店,2500,https://date-suggester.s3-ap-northeast-1.amazonaws.com/spot/42301868.jpg,https://tabelog.com/tokyo/A1303/A130302/13127590/,2,1
 3,代々木公園,水と緑の景色に包まれて、リラックスしたひとときが過ごそう♪,0,https://date-suggester.s3-ap-northeast-1.amazonaws.com/spot/yoyogipark.jpg,https://www.tokyo-park.or.jp/park/format/index039.html,1,2
-4,365日,公園近くのパン屋さん『365日』でランチをテイクアウト♪,700,https://date-suggester.s3-ap-northeast-1.amazonaws.com/spot/365days.jpg,"http://ultrakitchen.jp/projects/#item80"",""http://ultrakitchen.jp/projects/#item80",2,2
+4,365日,公園近くのパン屋さん『365日』でランチをテイクアウト♪,700,https://date-suggester.s3-ap-northeast-1.amazonaws.com/spot/365days.jpg,http://ultrakitchen.jp/projects/#item80,2,2
 5,牛かつあおな 新宿店,"牛カツハマるかも？
 ",2500,https://date-suggester.s3-ap-northeast-1.amazonaws.com/spot/gyuukatu_aona.jpg,https://tabelog.com/tokyo/A1304/A130401/13215446/,1,5
 6,ラッツダイニング 新宿店,おしゃれなバーでゆったり。,2000,https://date-suggester.s3-ap-northeast-1.amazonaws.com/spot/70447877_641439459721219_5909693049793007272_n.jpg,https://tabelog.com/tokyo/A1304/A130401/13102409/,2,5
