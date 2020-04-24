@@ -36,7 +36,7 @@ RSpec.describe 'PlanSuggestParam', type: :service do
           end
         end
         context '1の時' do
-          let(:low_budget) { (standard_budget * 0.7).round }
+          let(:low_budget) { (standard_budget * 0.5).round }
           it 'low_budgetが挿入され値が正常' do
             plan_suggest_param.date_budget = 1
             param_validation
@@ -44,7 +44,7 @@ RSpec.describe 'PlanSuggestParam', type: :service do
           end
         end
         context '2の時' do
-          let(:low_budget) { (standard_budget * 1.6).round }
+          let(:low_budget) { (standard_budget * 1.4).round }
           it 'low_budgetが挿入され値が正常' do
             plan_suggest_param.date_budget = 2
             param_validation
