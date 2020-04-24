@@ -14,6 +14,7 @@ class PlanSuggestParam
   attribute :birth_year, :integer
   attribute :tens_place_age, :integer
   attribute :early_or_late, :integer
+  attribute :my_plans_id, array: :integer
 
   validates :date_area, numericality: { in: 0..1 }
   validates :date_time, numericality: { in: 0..2 }
