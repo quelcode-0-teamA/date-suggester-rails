@@ -27,6 +27,6 @@ class Plan < ApplicationRecord
 
   validates :title, length: { in: 2..20 }
   validates :description, length: { in: 2..60 }
-  validates :thumb, format: URI.regexp(%w[http https])
+  validates :thumb, format: URI.regexp(%w[^http* ^https*])
   validates :total_budget, numericality: { only_integer: true }
 end
